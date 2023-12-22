@@ -1,0 +1,30 @@
+trigger: none
+
+pr:
+  branches:
+    include:
+    - ZhuLS
+    - Dev
+
+pool:
+  vmImage: 'ubuntu-latest'
+  name: Default
+
+stages:
+  - stage: MarkdownYamlCheck
+    jobs:
+      - job: InstallAndRunScript
+        container:
+          image: artifactory.momenta.works/docker-toolchain/python3.8:v3.8
+        steps:
+          - script: |
+              echo "Installing dependencies..."
+              pip install -r requirements.txt
+            displayName: 'Install dependencies'
+
+          - script: |
+              echo "Running the script..."
+              cd 5.Tool/InterfaceArxml
+              python md_yaml_check.py
+            displayName: 'Run Python script'
+            failOnStderr: 'false'

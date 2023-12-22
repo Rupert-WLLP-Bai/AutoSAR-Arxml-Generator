@@ -1,0 +1,5 @@
+**/.vscode/
+**/.idea/
+**/__pycache__
+**/*.xlsx
+**/result_component_new.arxml

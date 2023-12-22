@@ -1,0 +1,2644 @@
+Values:
+  AbsState:
+    description: 'ABS状态'
+    type: uint8
+  EscState:
+    description: 'ESC状态'
+    type: uint8
+  MrmState:
+    description: 'MRM状态'
+    type: uint8
+
+Arrays:
+  Mcu_Fault_Table:
+    description: 'send fault table to soc'
+    size: 64
+    type: uint8
+  Soc_Fault_Table:
+    description: 'send fault table to mcu'
+    size: 64
+    type: uint8
+  Send_Fault_Table:
+    description: '给另一面发数据'
+    size: 100
+    type: uint8
+  Recv_Fault_Table:
+    description: '从另一面收数据'
+    size: 100
+    type: uint8
+  APCP_A:
+    description: 'A面VSAP信号'
+    size: 1300
+    type: uint8
+    value:
+    - 0
+  APCP_B:
+    description: 'B面VSAP信号'
+    size: 1300
+    type: uint8
+    value:
+    - 0
+  CPAP:
+    description: 'VSCP上报给VSAP的数据'
+    size: 1300
+    type: uint8
+    value:
+    - 0
+  FTPOD:
+    description: 'fusion结果'
+    size: 100
+    ref: FusionOD
+  SafeCheck_CtrlCmdA:
+    description: 'A面Control控制指令'
+    size: 1300
+    type: uint8
+  SafeCheck_CtrlCmdB:
+    description: 'B面Control控制指令'
+    size: 1300
+    type: uint8
+  TrajA_RiskA:
+    description: 'A面报A面轨迹风险值'
+    size: 5
+    type: uint8
+  TrajA_Acc:
+    description: 'A面轨迹acc'
+    size: 200
+    type: float64
+  TrajA_Curvature:
+    description: 'A面轨迹curv'
+    size: 200
+    type: float64
+  TrajA_Distance:
+    description: 'A面轨迹s'
+    size: 200
+    type: float64
+  TrajA_Jerk:
+    description: 'A面轨迹jerk'
+    size: 200
+    type: float64
+  TrajA_RelativeTime:
+    description: 'A面轨迹相对时间'
+    size: 200
+    type: float64
+  TrajA_TargVelocity:
+    description: 'A面轨迹目标速度'
+    size: 200
+    type: float64
+  TrajA_X:
+    description: 'A面轨迹x'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  TrajA_Y:
+    description: 'A面轨迹y'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  TrajA_Yaw:
+    description: 'A面轨迹yaw'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  TrajB_RiskA:
+    description: 'B面报A面轨迹风险值'
+    size: 5
+    type: uint8
+  TrajB_Risk:
+    description: 'B面报B面轨迹风险值'
+    size: 5
+    type: uint8
+  TrajB_Acc:
+    description: 'B面轨迹acc'
+    size: 200
+    type: float64
+  TrajB_Curvature:
+    description: 'B面轨迹curv'
+    size: 200
+    type: float64
+  TrajB_Distance:
+    description: 'B面轨迹s'
+    size: 200
+    type: float64
+  TrajB_Jerk:
+    description: 'B面轨迹jerk'
+    size: 200
+    type: float64
+  TrajB_RelativeTime:
+    description: 'B面轨迹相对时间'
+    size: 200
+    type: float64
+  TrajB_TargVelocity:
+    description: 'B面轨迹目标速度'
+    size: 200
+    type: float64
+  TrajB_X:
+    description: 'B面轨迹x'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  TrajB_Y:
+    description: 'B面轨迹y'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  TrajB_Yaw:
+    description: 'B面轨迹yaw'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  SafeTraj_Acc:
+    description: 'safe轨迹acc'
+    size: 200
+    type: float64
+  SafeTraj_Curvature:
+    description: 'safe轨迹curv'
+    size: 200
+    type: float64
+  SafeTraj_Dist:
+    description: 'safe轨迹s'
+    size: 200
+    type: float64
+  SafeTraj_Jerk:
+    description: 'safe轨迹jerk'
+    size: 200
+    type: float64
+  SafeTraj_RelativeTime:
+    description: 'safe轨迹相对时间'
+    size: 200
+    type: float64
+  SafeTraj_TargVelocity:
+    description: 'safe轨迹目标速度'
+    size: 200
+    type: float64
+  SafeTraj_X:
+    description: 'safe轨迹x'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  SafeTraj_Y:
+    description: 'safe轨迹y'
+    size: 200
+    type: float64
+    value:
+    - 0.0
+  SafeTraj_Yaw:
+    description: 'safe轨迹yaw'
+    size: 200
+    type: float64
+    value: 0
+
+  USSRT_BodyConfidence:
+    description: '保存自车坐标系下的障碍物点置信度'
+    size: 64
+    type: float32
+  USSRT_BodyX:
+    description: '保存自车坐标系下的障碍物点x坐标'
+    size: 64
+    type: float32
+  USSRT_BodyY:
+    description: '保存自车坐标系下的障碍物点y坐标'
+    size: 64
+    type: float32
+  USSRT_BodyZ:
+    description: '保存自车坐标系下的障碍物点z坐标'
+    size: 64
+    type: float32
+  USSRT_Type:
+    description: '保存自车坐标系下的障碍物点类型'
+    size: 64
+    type: uint8
+  USSRT_Reserve1:
+    description: '保留字段1'
+    size: 2
+    type: uint8
+  USSRT_Reserve2:
+    description: '保留字段2'
+    size: 2
+    type: uint16
+  M_Fault:
+    description: ''
+    size: 64
+    type: uint8
+  MffMntSMDC:
+    description: '发给SMDC用于显示的debug'
+    size: 200
+    type: uint8
+    value: 0
+  MffAebMntSMDC:
+    description: '发给SMDC用于显示的debug'
+    size: 200
+    type: uint8
+    value: 0
+  WsmSyncSocA:
+    description: "A面Wsm发给DataSync的数据"
+    size: 64
+    type: uint8
+  WsmSyncSocB:
+    description: "B面Wsm发给DataSync的数据"
+    size: 64
+    type: uint8
+  WsmSig:
+    description: '用来进行状态切换的can信号'
+    size: 64
+    type: uint8
+  ShmSig:
+    description: '用来进行故障诊断的can信号'
+    size: 64
+    type: uint8
+  SocASyncWsm:
+    description: 'A面DataSync发给wsm的数据'
+    size: 64
+    type: uint8
+  SocBSyncWsm:
+    description: 'B面DataSync发给wsm的数据'
+    size: 64
+    type: uint8
+
+  Uss_echo_data:
+    description: ''
+    size: 3
+    ref: CommonUssEhcoData
+  Uss_echo_info:
+    description: ''
+    size: 12
+    ref: UltrasonicCommonEchoInfo
+
+  RadarPerceptionObjectsArray:
+    description: ''
+    size: 50
+    ref: RadarPerceptionObjects
+
+Structs:
+  SafeHeader:
+    SafeHeader_Stamp:
+      description: '时间戳'
+      type: uint64
+    SafeHeader_Seq:
+      description: '序列号'
+      type: uint16
+    SafeHeader_E2eFlag:
+      description: 'E2E标志位'
+      type: boolean
+
+  MetaHeader:
+    MetaHeader_MetaTimestampUs:
+      description: ''
+      type: uint64
+    MetaHeader_MetaSeq:
+      description: ''
+      type: uint64
+    MetaHeader_E2eFlag:
+      description: 'e2e'
+      type: uint8
+
+  AEB:
+    FIMRIMABP_BrkgCtlAccelAuth:
+      description: 'Rear Impact Mitigation Autonomous Braking Control Acceleration Authenticated'
+      type: float32
+    FIMRIMABP_BrkgLongAccelReqAuth:
+      description: 'Front Impact Mitigation Collision Imminent Steering Autonomous Braking Longitudinal Acceleration Request Authenticated'
+      type: float32
+    FIMRIMABP_BrkgReqAuth:
+      description: 'Rear Impact Mitigation Autonomous Brake Braking Request Authenticated'
+      type: boolean
+    FIMRIMABP_FIMCISAutBrkRqTypAuth:
+      description: 'Front Impact Mitigation Collision Imminent Steering Autonomous Brake Request Type Authenticated'
+      type: uint8
+    FIMRIMABP_ReqActvAuth:
+      description: 'Front Impact Mitigation Collision Imminent Steering Autonomous Brake Request Active Authenticated'
+      type: boolean
+    ClsnImntBrkgAxlTrqRqAuth:
+      description: 'Collision Imminent Braking Axle Torque Request Authenticated'
+      type: float32
+    ClsnImntBrkgAxlTrqRqActvAuth:
+      description: 'Collision Imminent Braking Axle Torque Request Active Authenticated'
+      type: boolean
+    FIMRIMABP_RIMAutoBrkgReqTypAuth:
+      description: 'Rear Impact Mitigation Autonomous Brake Request Type Authenticated'
+      type: boolean
+    RIMATRP_TrqRqstActAuth:
+      description: 'RIM Axle Torque Request Active Authenticated'
+      type: boolean
+    RIMATRP_TrqRqstAuth:
+      description: 'RIM Axle Torque Request Authenticated'
+      type: float32
+
+
+  APA:
+    APACtrlTctlFdbk:
+      description: 'APACtrlTctlFdbk'
+      type: boolean
+    APACAP_APACtlAngReqValAuth:
+      description: 'Advanced Park Assist Control Angle Request Value Authenticated'
+      type: float32
+    APACAP_APACtlAngReqActvAuth:
+      description: 'Advanced Park Assist Control Angle Request Active Authenticated'
+      type: uint8
+    APASP_APAStsAuth:
+      description: 'APASP_APAStsAuth'
+      type: uint8
+    APASP_APATransRngActvnReqdAuth:
+      description: 'APASP_APATransRngActvnReqdAuth'
+      type: boolean
+    APASP_APATransRngReqAuth:
+      description: 'APASP_APATransRngReqAuth'
+      type: uint8
+    SuprRmtPrkBrkTrqReq:
+      description: 'Supervised Remote Parking Brake Torque Request'
+      type: float32
+    SuprRmtPrkElecPrkBrkReq:
+      description: 'Supervised Remote Parking Electric Park Brake Request'
+      type: uint8
+    SuprRmtPrkFricBrkTrqReqTyp:
+      description: 'Supervised Remote Parking Friction Brake Torque Request Type'
+      type: uint8
+    SuprRmtPrkPrplSysActvnReqd:
+      description: 'Supervised Remote Parking Propulsion System Activation Requested'
+      type: boolean
+    SuprRmtPrkPrplSysTrqReq:
+      description: 'Supervised Remote Parking Propulsion System Torque Reques'
+      type: float32
+  AebOFResult:
+    AebOFResult_AebFilterReason:
+      description: '未通过原因'
+      type: uint8
+    AebOFResult_AebIsFilter:
+      description: '是否验证通过'
+      type: boolean
+    AebOFResult_AebOFFilterReason:
+      description: '未通过原因'
+      type: uint8
+    AebOFResult_AebOFIsFilter:
+      description: '是否验证通过'
+      type: boolean
+
+  AebTarg:
+    AebTarg_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    AebTarg_ReservedInfoABA:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::ABA]'
+      type: sint16
+    AebTarg_ReservedInfoABP:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::ABP]'
+      type: sint16
+    AebTarg_ReservedInfoAEB:
+      description: '/perception/fusion/aeb_object maf_perception_interface::PerceptionFusionObjectResult perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::AEB]'
+      type: sint16
+    AebTarg_ReservedInfoAPB:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::APB]'
+      type: sint16
+    AebTarg_ReservedInfoAWB:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::AWB]'
+      type: sint16
+    AebTarg_ReservedInfoCDW:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::CDW]'
+      type: sint16
+    AebTarg_ReservedInfoEBA:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::EBA]'
+      type: sint16
+    AebTarg_ReservedInfoFCW:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::FCW]'
+      type: sint16
+    AebTarg_ReservedInfoRCTA:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::RCTA]'
+      type: sint16
+    AebTarg_ReservedInfoRCTB:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::RCTB]'
+      type: sint16
+    AebTarg_ReservedInfoRPCM:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::RPCM]'
+      type: sint16
+    AebTarg_ReservedInfoRVB:
+      description: 'perception_fusion_aeb_objects.reserved_infos[AEBReserveInfoIndex::RVB]'
+      type: sint16
+
+  Body:
+    Body_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    Body_AuxiliaryReportDataVehiclePowerMode:
+      description: '车辆电源状态  auxiliary_report.auxiliary_report_data.vehicle_power_mode'
+      type: sint16
+    Body_AuxiliaryReportDataVehicleSpeedOnDashboard:
+      description: '表显车速 auxiliary_report.auxiliary_report_data.vehicle_speed_on_dashboard'
+      type: float32
+    Body_HumanProtectedDeviceDriverPassengerAirbag:
+      description: '安全带报警信息上报 PASSENGER_AIRBAG human_protected_device_report.human_protected_device_report_data.enabled_human_protected_device_array[3].value'
+      type: boolean
+    Body_HumanProtectedDeviceDriverSeatBelt:
+      description: '安全带报警信息上报 DRIVER_SEATBELT human_protected_device_report.human_protected_device_report_data.enabled_human_protected_device_array[0].value'
+      type: boolean
+    Body_IsAuxiliaryReportAvailable:
+      description: 'auxiliary_report.available'
+      type: boolean
+    Body_IsBonnetOpen:
+      description: '开启的门HOOD door_report.door_report_data.opened_door_array[4].value'
+      type: boolean
+    Body_IsDoorReportAvailable:
+      description: 'door_report.available'
+      type: boolean
+    Body_IsDriverDoorOpen:
+      description: '开启的门Driver door_report.door_report_data.opened_door_array[0].value'
+      type: boolean
+    Body_IsFrontPassengerDoorOpen:
+      description: '开启的门Passenger door_report.door_report_data.opened_door_array[1].value'
+      type: boolean
+    Body_IsHumanProtectedDeviceReportAvailable:
+      description: 'human_protected_device_report.available'
+      type: boolean
+    Body_IsRearLeftDoorOpen:
+      description: '开启的门RearLeft door_report.door_report_data.opened_door_array[2].value'
+      type: boolean
+    Body_IsRearRightDoorOpen:
+      description: '开启的门RearRight door_report.door_report_data.opened_door_array[3].value'
+      type: boolean
+    Body_IsTrunkOpen:
+      description: '开启的门TRUNK door_report.door_report_data.opened_door_array[5].value'
+      type: boolean
+    Body_BluetoothControlActivate:
+      description: 'PS功能激活'
+      type: boolean
+    Body_BluetoothControlConnected:
+      description: '控车蓝牙是否正常'
+      type: boolean
+    Body_BluetoothControlDeactivate:
+      description: 'PS功能取消'
+      type: boolean
+    Body_BluetoothControlDistance:
+      description: '控车蓝牙模块的距离'
+      type: float32
+    Body_BluetoothControlPress:
+      description: 'PS功能遥控按键按下'
+      type: boolean
+    Body_Ignition:
+      description: '点火开关开启'
+      type: boolean
+    Body_PowertrainReady:
+      description: '动力系统已就绪'
+      type: boolean
+      value: false
+    Body_SysSelfTest:
+      description: '系统自检成功'
+      type: boolean
+      value: false
+    Body_WindowStateLeftFront:
+      description: '左后玻璃升降状态: window_report.window_report_data.window_state_left_rear.value'
+      type: sint16
+      value: 0
+    Body_WindowStateLeftRear:
+      description: '左前玻璃升降状态：window_report.window_report_data.window_state_left_front.value'
+      type: sint16
+      value: 0
+    Body_WindowStateRightFront:
+      description: '右前玻璃升降状态: window_report.window_report_data.window_state_right_front.value'
+      type: sint16
+      value: 0
+    Body_WindowStateRightRear:
+      description: '右后玻璃升降状态: window_report.window_report_data.window_state_right_rear.value'
+      type: sint16
+      value: 0
+    Body_WindowStateTop:
+      description: '天窗升降状态 :window_report.window_report_data.window_state_top'
+      type: sint16
+      value: 0
+    Body_E2eFlag:
+      description: 'e2e'
+      type: uint8
+    Body_HeaderFrameID:
+      description: ''
+      type: uint64
+    Body_HeaderSeq:
+      description: ''
+      type: uint32
+    Body_HeaderStamp:
+      description: ''
+      type: uint64
+    Body_MetaSeq:
+      description: ''
+      type: uint64
+    Body_MetaTimestampUs:
+      description: ''
+      type: uint64
+  CalibReq:
+    CalibReq_Cmd:
+      description: 'calib control cmd'
+      type: uint8
+    CalibReq_Type:
+      description: 'calib sensor type'
+      type: uint8
+  CalibResult:
+    CalibStatusEnum:
+      description: 'calib status'
+      type: uint8
+    TotalErrorCodeEnum:
+      description: 'error code for calibration'
+      type: uint8
+
+  Chassis:
+    Classis_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    Classis_Handon:
+      description: '司机握手/脱手'
+      type: boolean
+    Classis_PowerMode:
+      description: '主电源模式'
+      type: uint8
+    Classis_WiperGear:
+      description: '雨刷器挡位'
+      type: uint8
+    Chassis_BrakeInfoStationary:
+      description: '车辆是否静止 brake_info_report.brake_info_report_data.stationary'
+      type: boolean
+    Chassis_BrakeInfoTcsActive:
+      description: 'tcs active状态 牵引力控制 brake_info_report.brake_info_report_data.tcs_active'
+      type: boolean
+    Chassis_BrakeOutput:
+      description: '车辆执行量 brake_report.brake_report_data.brake_output'
+      type: float32
+    Chassis_BrakeOverride:
+      description: 'Brake接管'
+      type: boolean
+    Chassis_BrakePedalInput:
+      description: '踏板物理输入量 brake_report.brake_report_data.pedal_input'
+      type: float32
+    Chassis_EpbStatus:
+      description: 'EPB当前位置 epb_report.epb_report_data.epb_report.value'
+      type: sint16
+    Chassis_GearReportCurrentState:
+      description: '当前档位 gear_report.gear_report_data.current_state.value'
+      type: sint16
+    Chassis_IsThrottleReportAvailable:
+      description: 'throttle_report.available'
+      type: boolean
+    Chassis_SteeringOverride:
+      description: 'Steering接管'
+      type: boolean
+    Chassis_SteeringWheelAngle:
+      description: '方向盘转向角反馈值 steering_report.steering_report_data.steering_wheel_angle_report'
+      type: float32
+    Chassis_ThrottleInfoVehicleSpeedAvg:
+      description: '平均车速 throttle_info_report.throttle_info_report_data.vehicle_speed_average'
+      type: float32
+    Chassis_ThrottleOverride:
+      description: 'Throttle接管 throttle_report.throttle_report_data.override'
+      type: boolean
+    Chassis_ThrottlePedalInput:
+      description: '踏板物理输入量 throttle_report.throttle_report_data.pedal_input'
+      type: float32
+    Chassis_GearReport:
+      description: ''
+      type: uint8
+    Chassis_MotorSpeedReportFrontLeft:
+      description: ''
+      type: float64
+    Chassis_MotorSpeedReportFrontRight:
+      description: ''
+      type: float64
+    Chassis_MotorSpeedReportRearLeft:
+      description: ''
+      type: float64
+    Chassis_MotorSpeedReportRearRight:
+      description: ''
+      type: float64
+    Chassis_MotorSpeedReportTimestampUs:
+      description: ''
+      type: uint64
+    Chassis_E2eFlag:
+      description: 'e2e'
+      type: uint8
+    Chassis_HeaderFrameID:
+      description: ''
+      type: uint64
+    Chassis_HeaderSeq:
+      description: ''
+      type: uint32
+    Chassis_HeaderStamp:
+      description: ''
+      type: uint64
+    Chassis_MetaSeq:
+      description: ''
+      type: uint64
+    Chassis_MetaTimestampUs:
+      description: ''
+      type: uint64
+
+
+  DdpfOut:
+    DdpfOut_AccelerationAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_AccelerationLocalX:
+      description: ''
+      type: float64
+    DdpfOut_AccelerationLocalY:
+      description: ''
+      type: float64
+    DdpfOut_AccelerationLocalZ:
+      description: ''
+      type: float64
+    DdpfOut_AngularVelocityAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_AngularVelocityLocalX:
+      description: ''
+      type: float64
+    DdpfOut_AngularVelocityLocalY:
+      description: ''
+      type: float64
+    DdpfOut_AngularVelocityLocalZ:
+      description: ''
+      type: float64
+    DdpfOut_E2eFlag:
+      description: 'e2e'
+      type: uint8
+    DdpfOut_EgoAcc:
+      description: '自车acc'
+      type: float64
+    DdpfOut_EgoVelocity:
+      description: '自车velocity'
+      type: float64
+    DdpfOut_EgoX:
+      description: '自车x'
+      type: float64
+    DdpfOut_EgoY:
+      description: '自车y'
+      type: float64
+    DdpfOut_EgoYaw:
+      description: '自车yaw'
+      type: float64
+    DdpfOut_HeaderFrameID:
+      description: ''
+      type: uint64
+    DdpfOut_HeaderSeq:
+      description: ''
+      type: uint32
+    DdpfOut_HeaderStamp:
+      description: ''
+      type: uint64
+    DdpfOut_MetaSeq:
+      description: ''
+      type: uint64
+    DdpfOut_MetaTimestampUs:
+      description: ''
+      type: uint64
+    DdpfOut_OrientationAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_OrientationEulerLocalPitch:
+      description: ''
+      type: float64
+    DdpfOut_OrientationEulerLocalRoll:
+      description: ''
+      type: float64
+    DdpfOut_OrientationEulerLocalYaw:
+      description: ''
+      type: float64
+    DdpfOut_OrientationQuaternionLocalW:
+      description: ''
+      type: float64
+    DdpfOut_OrientationQuaternionLocalX:
+      description: ''
+      type: float64
+    DdpfOut_OrientationQuaternionLocalY:
+      description: ''
+      type: float64
+    DdpfOut_OrientationQuaternionLocalZ:
+      description: ''
+      type: float64
+    DdpfOut_PositionAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_PositionLocalX:
+      description: ''
+      type: float64
+    DdpfOut_PositionLocalY:
+      description: ''
+      type: float64
+    DdpfOut_PositionLocalZ:
+      description: ''
+      type: float64
+    DdpfOut_StatusAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_StatusCommon:
+      description: ''
+      type: uint64
+    DdpfOut_StatusExtended:
+      description: ''
+      type: uint64
+    DdpfOut_StatusQuality:
+      description: ''
+      type: uint8
+    DdpfOut_StatusType:
+      description: ''
+      type: uint8
+    DdpfOut_VelocityAvailable:
+      description: ''
+      type: uint8
+    DdpfOut_VelocityLocalX:
+      description: ''
+      type: float64
+    DdpfOut_VelocityLocalY:
+      description: ''
+      type: float64
+    DdpfOut_VelocityLocalZ:
+      description: ''
+      type: float64
+    DdpfOut_WheelSpeed:
+      description: '车速'
+      type: float64
+
+  Can_E2:
+    SD20P_MAC:
+      description: ''
+      type: uint32
+    SD20P_FCnt:
+      description: ''
+      type: uint8
+    DIATMNP_DrvrIntdAxlTqMnAuth:
+      description: ''
+      type: float32
+    DIATMNP_DrvrIntdAxlTqMnAuth_Inv:
+      description: ''
+      type: boolean
+    DIATMXP_DrvrIntdAxlTqMxAuth:
+      description: ''
+      type: float32
+    DIATMXP_DrvrIntdAxlTqMxAuth_Inv:
+      description: ''
+      type: boolean
+    DITP_DrvrIntndAxlTrqAuth:
+      description: ''
+      type: float32
+    DITP_DrvrIntndAxlTrqAuth_Inv:
+      description: ''
+      type: boolean
+    VMI1P_AccelPedOvrrdActvAuth:
+      description: ''
+      type: uint8
+    VMI1P_AccelActlPstnAuth_Inv:
+      description: ''
+      type: boolean
+    VMI1P_AccelActlPstnAuth:
+      description: ''
+      type: float32
+    SD20P_ARC:
+      description: ''
+      type: uint8
+
+  EBCM:
+    EBCM_BrkPedalAppld:
+      description: 'EBCM主制动'
+      type: uint32
+    EBCM_Status:
+      description: 'EBCM主制动系统状态'
+      type: sint16
+  EPS:
+    EPS_Status:
+      description: 'ESP状态'
+      type: sint16
+    EPS_SteerWheelAng:
+      description: '方向盘转角'
+      type: float64
+    EPS_SteerWheelSpd:
+      description: '方向盘转角速度'
+      type: float64
+  ESP:
+    ESP_Esp:
+      description: '电子车身稳定系统'
+      type: boolean
+    EPS_Status:
+      description: 'ESP状态'
+      type: sint16
+    ESP_MasterCylBrkPress:
+      description: '主缸压力信号'
+      type: float64
+  EgoPose:
+    EgoPose_EgoAcc:
+      description: '自车acc'
+      type: float64
+    EgoPose_EgoPitch:
+      description: '自车pitch'
+      type: float64
+    EgoPose_EgoVelocity:
+      description: '自车velocity'
+      type: float64
+    EgoPose_EgoX:
+      description: '自车x'
+      type: float64
+    EgoPose_EgoY:
+      description: '自车y'
+      type: float64
+    EgoPose_EgoYaw:
+      description: '自车yaw'
+      type: float64
+
+  FusionOD:
+    FTP_Available:
+      description: '障碍物是否有效'
+      type: uint8
+    FTP_Type:
+      description: '障碍物类型 0-ADAS_OBJECT_TYPE_OTHER, 1-ADAS_OBJECT_TYPE_VEHICLE, 2-ADAS_OBJECT_TYPE_NON_MOTOR, 3-ADAS_OBJECT_TYPE_PEDESTRIAN'
+      type: uint8
+    FTP_Height:
+      description: '障碍物高度'
+      type: float64
+    FTP_Length:
+      description: '障碍物长度'
+      type: float64
+    FTP_PositionX:
+      description: '障碍物x方向位置'
+      type: float64
+    FTP_PositionY:
+      description: '障碍物y方向位置'
+      type: float64
+    FTP_PositionZ:
+      description: '障碍物z方向位置'
+      type: float64
+    FTP_Timestamp:
+      description: 'sensor时间戳'
+      type: uint64
+    FTP_VelocityX:
+      description: '障碍物x方向速度'
+      type: float64
+    FTP_VelocityY:
+      description: '障碍物y方向速度'
+      type: float64
+    FTP_VelocityZ:
+      description: '障碍物z方向速度'
+      type: float64
+    FTP_Width:
+      description: '障碍物宽度'
+      type: float64
+    FTP_Yaw:
+      description: '朝向角'
+      type: float64
+
+  FTP:
+    FusionObject:
+      description: 'FTP object结果'
+      ref: FTPOD
+    FTP_Len:
+      description: 'object 长度'
+      type: uint16
+
+  DynamicSafetyCheckResultA:
+    Effevtive_LengthA:
+      description: 'A面轨迹值有效个数'
+      type: uint8
+      value: 0
+    TrajA_RiskA:
+      description: 'A面报A面轨迹风险值'
+      ref: TrajA_RiskA
+    TrajA_Acc:
+      description: 'A面轨迹acc'
+      ref: TrajA_Acc
+    TrajA_Curvature:
+      description: 'A面轨迹curv'
+      ref: TrajA_Curvature
+    TrajA_Dist:
+      description: 'A面轨迹s'
+      ref: TrajA_Distance
+    TrajA_Jerk:
+      description: 'A面轨迹jerk'
+      ref: TrajA_Jerk
+    TrajA_RelativeTime:
+      description: 'A面轨迹相对时间'
+      ref: TrajA_RelativeTime
+    TrajA_TargVelocity:
+      description: 'A面轨迹目标速度'
+      ref: TrajA_TargVelocity
+    TrajA_X:
+      description: 'A面轨迹x'
+      ref: TrajA_X
+    TrajA_Y:
+      description: 'A面轨迹y'
+      ref: TrajA_Y
+    TrajA_Yaw:
+      description: 'A面轨迹yaw'
+      ref: TrajA_Yaw
+
+  DynamicSafetyCheckResultB:
+    Effevtive_LengthB:
+      description: 'B面轨迹值有效个数'
+      type: uint8
+      value: 0
+    TrajB_RiskA:
+      description: 'B面报A面轨迹风险值'
+      ref: TrajB_RiskA
+    TrajB_Risk:
+      description: 'B面轨迹风险值'
+      ref: TrajB_Risk
+    TrajB_Acc:
+      description: 'B面轨迹acc'
+      ref: TrajB_Acc
+    TrajB_Curvature:
+      description: 'B面轨迹curv'
+      ref: TrajB_Curvature
+    TrajB_Dist:
+      description: 'B面轨迹s'
+      ref: TrajB_Distance
+    TrajB_Jerk:
+      description: 'B面轨迹jerk'
+      ref: TrajB_Jerk
+    TrajB_RelativeTime:
+      description: 'B面轨迹相对时间'
+      ref: TrajB_RelativeTime
+    TrajB_TargVelocity:
+      description: 'B面轨迹目标速度'
+      ref: TrajB_TargVelocity
+    TrajB_X:
+      description: 'B面轨迹x'
+      ref: TrajB_X
+    TrajB_Y:
+      description: 'B面轨迹y'
+      ref: TrajB_Y
+    TrajB_Yaw:
+      description: 'B面轨迹yaw'
+      ref: TrajB_Yaw
+
+  APCP:
+    APCP_A:
+      description: 'A面VSAP信号'
+      ref: APCP_A
+    APCP_B:
+      description: 'B面VSAP信号'
+      ref: APCP_B
+
+  SafeCheck:
+    SafeCheck_CtrlCmdA:
+      description: 'A面Control控制指令'
+      ref: SafeCheck_CtrlCmdA
+    SafeCheck_CtrlCmdB:
+      description: 'B面Control控制指令'
+      ref: SafeCheck_CtrlCmdB
+    SafeCheck_ResultA:
+      description: 'A面PNC指令校验结果'
+      type: uint8
+    SafeCheck_ResultB:
+      description: 'B面PNC指令校验结果'
+      type: uint8
+
+  SafeTraj:
+    SafeTraj_Acc:
+      description: 'Safe轨迹acc'
+      ref: SafeTraj_Acc
+    SafeTraj_Curvature:
+      description: 'Safe轨迹curv'
+      ref: SafeTraj_Curvature
+    SafeTraj_Dist:
+      description: 'Safe轨迹s'
+      ref: SafeTraj_Dist
+    SafeTraj_Jerk:
+      description: 'Safe轨迹jerk'
+      ref: SafeTraj_Jerk
+    SafeTraj_RelativeTime:
+      description: 'Safe轨迹相对时间'
+      ref: SafeTraj_RelativeTime
+    SafeTraj_TargVelocity:
+      description: 'Safe轨迹目标速度'
+      ref: SafeTraj_TargVelocity
+    SafeTraj_X:
+      description: 'Safe轨迹x'
+      ref: SafeTraj_X
+    SafeTraj_Y:
+      description: 'Safe轨迹y'
+      ref: SafeTraj_Y
+    SafeTraj_Yaw:
+      description: 'Safe轨迹yaw'
+      ref: SafeTraj_Yaw
+
+  USSRT:
+    USSRT_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    USSRT_ParkingFusionResult:
+      description: '1.离散障碍物点 2.融合的环境信息'
+      type: uint8
+    USSRT_BodyConfidence:
+      description: '保存自车坐标系下的障碍物点置信度'
+      ref: USSRT_BodyConfidence
+    USSRT_BodyX:
+      description: '保存自车坐标系下的障碍物点x坐标'
+      ref: USSRT_BodyX
+    USSRT_BodyY:
+      description: '保存自车坐标系下的障碍物点y坐标'
+      ref: USSRT_BodyY
+    USSRT_BodyZ:
+      description: '保存自车坐标系下的障碍物点z坐标'
+      ref: USSRT_BodyZ
+    USSRT_Reserve1:
+      description: '保留字段1'
+      ref: USSRT_Reserve1
+    USSRT_Reserve2:
+      description: '保留字段2'
+      ref: USSRT_Reserve2
+    USSRT_Type:
+      description: '障碍物类型'
+      ref: USSRT_Type
+
+  HmiStatus:
+    HmiStatus_PaStatusInfo:
+      description: 'Todo'
+      type: uint32
+
+  MLAImu:
+    MLAImu_Header:
+      description: ''
+      ref: SafeHeader
+    MLAImu_Meta:
+      description: ''
+      ref: MetaHeader
+    MLAImu_Available:
+      description: '可用标志'
+      type: uint8
+    MLAImu_AccX:
+      description: '加速度计X轴(g)(.5)'
+      type: float64
+    MLAImu_AccY:
+      description: '加速度计Y轴(g)(.5)'
+      type: float64
+    MLAImu_AccZ:
+      description: '加速度计Z轴(g)(.5)'
+      type: float64
+    MLAImu_GyroX:
+      description: '陀螺X轴 (rad/s)(.5)'
+      type: float64
+    MLAImu_GyroY:
+      description: '陀螺Y轴 (rad/s)(.5)'
+      type: float64
+    MLAImu_GyroZ:
+      description: '陀螺Z轴 (rad/s)(.5)'
+      type: float64
+    MLAImu_Temperature:
+      description: 'IMU温度信息(℃)(.1)'
+      type: float64
+
+  LAT:
+    AASILASStrgReqAFtr:
+      description: 'Arbitrated ASIL Active Safety Steering Request Arbitrated Feature'
+      type: uint8
+    AASILASStrgReqTyp:
+      description: 'Arbitrated ASIL Active Safety Steering Request Type'
+      type: uint8
+    AASILASStrgReqSts:
+      description: 'Arbitrated ASIL Active Safety Steering Request Status'
+      type: uint8
+    AASILASStrgReqAngVal:
+      description: 'Arbitrated ASIL Active Safety Steering Request Angle Value'
+      type: float32
+
+  LONG:
+    ACCATRIP_TrqActvAuth:
+      description: 'Torque Active Authenticated'
+      type: boolean
+    ACCATRIP_TrqDrvAstGoStatAuth:
+      description: 'Torque Driver Assisted Go State Authenticated'
+      type: uint8
+    ACCATRIP_TrqMagAuth:
+      description: 'Torque Magnitude Authenticated'
+      type: float32
+    ACCATRIP_TrqTypAuth:
+      description: 'Torque Type Authenticated'
+      type: uint8
+    ACCBRP_ACCActvAuth:
+      description: 'Adaptive Cruise Control Active Authenticated'
+      type: boolean
+    ACCBRP_ReqActvAuth:
+      description: 'Adaptive Cruise Control Braking Request Active Authenticated'
+      type: boolean
+    ACCBRP_ReqMagAuth:
+      description: 'Adaptive Cruise Control Braking Request Magnitude Authenticated'
+      type: float32
+    ACCBRP_ReqTypAuth:
+      description: 'Adaptive Cruise Control Braking Request Type Authenticated'
+      type: uint8
+    AdptCrsCntrlEngd:
+      description: 'Momenta_Adaptive Cruise Control Engaged'
+      type: boolean
+
+  LightControl:
+    LnChgDmndMomtryLnChgDsbl:
+      description: 'Momenta_Lane Change on Demand Momentary Lane Change Disable'
+      type: boolean
+    LnChgDmndLnChgReq:
+      description: 'Momenta_Lane Change on Demand Lane Change Request'
+      type: uint8
+    AutoHgBmActReq:
+      description: 'Momenta_Auto High Beam Activation Request'
+      type: boolean
+    AutoHgBmCtrlIO:
+      description: 'Momenta_Auto High Beam Control Indication On'
+      type: boolean
+
+  Control_Reserve:
+    Control_Reserve_1:
+      description: ''
+      type: float32
+    Control_Reserve_2:
+      description: ''
+      type: float32
+    Control_Reserve_3:
+      description: ''
+      type: float32
+    Control_Reserve_4:
+      description: ''
+      type: float32
+    Control_Reserve_5:
+      description: ''
+      type: float32
+    Control_Reserve_6:
+      description: ''
+      type: float32
+    Control_Reserve_7:
+      description: ''
+      type: float32
+    Control_Reserve_8:
+      description: ''
+      type: float32
+
+  MdFuncInfo_Pilot:
+    MdFuncInfo_CanEnterAcc:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainAcc:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterCp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainCp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterHnp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainHnp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterUnp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainUnp:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+
+  MdFuncInfo_Parking:
+    MdFuncInfo_CanEnterPNP:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainPNP:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterLPNPMapping:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainLPNPMapping:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterLPNPCruising:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainLPNPCruising:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanEnterAPA:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+    MdFuncInfo_CanRetainAPA:
+      description: '抑制激活: false 不抑制: true'
+      type: boolean
+
+  MdFuncInfo_Adas:
+    MdFuncInfo_CanEnterAEB:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanRetainAEB:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanEnterRIM:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanRetainRIM:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanEnterMEB:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanRetainMEB:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanEnterELK:
+      description: '来自Md的故障信息'
+      type: boolean
+    MdFuncInfo_CanRetainELK:
+      description: '来自Md的故障信息'
+      type: boolean
+
+  MdFuncInfo:
+    MdFuncInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MdFuncInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MdFuncInfo_Pilot:
+      ref: MdFuncInfo_Pilot
+    MdFuncInfo_Parking:
+      ref: MdFuncInfo_Parking
+    MdFuncInfo_Adas:
+      ref: MdFuncInfo_Adas
+
+  MffPlanningRequestInfo:
+    MffPlanningRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffPlanningRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffPlanningRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+    MffPlanningRequestInfo_MrmCmd:
+      description: '请求mrm cmd'
+      type: uint8
+
+  MffWorldModelRequestInfo:
+    MffWorldModelRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffWorldModelRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffWorldModelRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+
+  MffControlRequestInfo:
+    MffControlRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffControlRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffControlRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+
+  MffLocalizationRequestInfo:
+    MffLocalizationRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffLocalizationRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffLocalizationRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+
+  MffPredictionRequestInfo:
+    MffPredictionRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffPredictionRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffPredictionRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+
+  MffVehicleRequestInfo:
+    MffVehicleRequestInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffVehicleRequestInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffVehicleRequestInfo_FunctionMode:
+      description: '请求function mode'
+      type: uint8
+
+  MffPlanningResponseInfo:
+    MffPlanningResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffPlanningResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffPlanningResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffWorldModelResponseInfo:
+    MffWorldModelResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffWorldModelResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffWorldModelResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffControlResponseInfo:
+    MffControlResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffControlResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffControlResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffLocalizationResponseInfo:
+    MffLocalizationResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffLocalizationResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffLocalizationResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffPredictionResponseInfo:
+    MffPredictionResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffPredictionResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffPredictionResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffVehicleResponseInfo:
+    MffVehicleResponseInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffVehicleResponseInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    MffVehicleResponseInfo_Success :
+      description: '请求function是否成功回复值'
+      type: boolean
+
+  MffAebReq:
+    MffAebReq_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffAebReq_JsonAvailable:
+      description: 'JsonAvailable bit'
+      type: uint32
+    MffAebReq_ABALevelS:
+      description: 'ABA Level,aba_brake_level'
+      type: uint8
+    MffAebReq_AWBReq:
+      description: 'AWB Req,awb_brake_req'
+      type: uint8
+    MffAebReq_DCLCMD:
+      description: 'AEB Req CMD Value,aeb_brake_level'
+      type: float32
+    MffAebReq_DCLReqSts:
+      description: 'AEB Req,aeb_brake_req'
+      type: uint8
+    MffAebReq_EBAReq:
+      description: 'EBA Req,eba_brake_req'
+      type: uint8
+    MffAebReq_EBAReqVal:
+      description: 'EBA Req Value,eba_brake_level'
+      type: uint8
+    MffAebReq_HBAReqLvl:
+      description: 'HBA Level'
+      type: uint8
+    MffAebReq_PFReq:
+      description: 'AEB Prefill Req,aeb_prefill_req'
+      type: uint8
+    MffAebReq_MebReq:
+      description: 'MEB Req,meb_brake_req'
+      type: uint8
+    MffAebReq_MebReqVal:
+      description: 'MEB Req Value,meb_brake_level'
+      type: float32
+
+  MebReq:
+    MebReq_Brake:
+      description: 'MEB刹车请求'
+      type: boolean
+    MebReq_Warn:
+      description: 'MEB预警请求'
+      type: boolean
+
+  SocMpfModule:
+    SocMpfModule_DetailStatus:
+      description: 'detail_status 当前是否在自动状态RUNNING_TAKING_OVER'
+      type: sint16
+    SocMpfModule_Status:
+      description: 'status 当前是否在自动状态RUNNING'
+      type: sint16
+    SocMpfModule_Type:
+      description: 'module_type.value maf_framework_status::ModuleType'
+      type: sint16
+
+  MffMntCmd:
+    MdFuncInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffMntCmd_FuncModeRequested:
+      description: 'function_mode_requested'
+      type: uint8
+    MffMntCmd_AbnormalActivation:
+      description: 'abnormal_activation'
+      type: boolean
+    MffMntCmd_Exit:
+      description: 'exit'
+      type: boolean
+    MffMntCmd_HandoverRequest:
+      description: 'handover_request'
+      type: boolean
+    MffMntCmd_ParkExit:
+      description: 'park_exit'
+      type: boolean
+    MffMntCmd_Warning:
+      description: 'warning'
+      type: boolean
+    MffMntCmd_VerticalUncontrolled:
+      description: 'vertical_uncontrolled'
+      type: boolean
+    MffMntCmd_NotResumeBelt:
+      description: 'not_resume_belt'
+      type: boolean
+    MffMntCmd_AbnormalResume:
+      description: 'abnormal_resume'
+      type: boolean
+    MffMntCmd_SOC_B_MRM:
+      description: 'soc_b_mrm'
+      type: boolean
+
+  MffMntInfo:
+    MffMntInfo_FuncModeResult:
+      description: 'function_mode_result'
+      type: uint8
+
+  PsCtrlCmd:
+    PsCtrlCmd_BrakeAccStandstill:
+      description: 'standstill请求'
+      type: uint8
+      value: 0
+    PsCtrlCmd_BrakeCommand:
+      description: '刹车指令'
+      type: float32
+      value: 0
+    PsCtrlCmd_BrakeEnable:
+      description: '刹车使能'
+      type: boolean
+      value: 0
+    PsCtrlCmd_BrakeType:
+      description: '刹车类型'
+      type: uint8
+    PsCtrlCmd_GearEnable:
+      description: '档位使能'
+      type: boolean
+      value: 0
+    PsCtrlCmd_GearType:
+      description: '档位指令'
+      type: uint8
+      value: 0
+    PsCtrlCmd_RearviewMirror:
+      description: '后视镜控制'
+      type: boolean
+      value: 0
+    PsCtrlCmd_SteeringCommand:
+      description: '方向盘指令'
+      type: float32
+      value: 0
+    PsCtrlCmd_SteeringEnable:
+      description: '方向盘使能'
+      type: boolean
+      value: 0
+    PsCtrlCmd_SteeringType:
+      description: '方向盘类型'
+      type: uint8
+      value: 0
+    PsCtrlCmd_ThrottleCommand:
+      description: '油门指令'
+      type: float32
+      value: 0
+    PsCtrlCmd_ThrottleEnable:
+      description: '油门使能'
+      type: boolean
+      value: 0
+    PsCtrlCmd_ThrottleType:
+      description: '油门类型'
+      type: uint8
+      value: 0
+    PsCtrlCmd_TimestampUs:
+      description: '当前时间戳'
+      type: uint32
+      value: 0
+    PsCtrlCmd_TurnSignal:
+      description: '转向灯信号'
+      type: uint8
+      value: 0
+    PsCtrlCmd_VehicleLock:
+      description: '车辆落锁状态'
+      type: boolean
+      value: 0
+    PsCtrlCmd_WireControlType:
+      description: '线控类型'
+      type: uint8
+      value: 0
+
+  PosErrAccum:
+    PosErrAccum_Lat:
+      description: '横向累计误差'
+      type: float64
+    PosErrAccum_Lon:
+      description: '纵向累计误差'
+      type: float64
+
+  PsResult:
+    PsResult_Distance:
+      description: '走到指定位置反馈'
+      type: float32
+      value: 0
+    PsResult_ObstacleExist:
+      description: '被障碍物卡停'
+      type: boolean
+      value: false
+
+  MffPs:
+    MffPs_DisableAutoDrive:
+      description: '退自动'
+      type: boolean
+      value: false
+    MffPs_DisablePS:
+      description: '退直入直出功能'
+      type: boolean
+      value: false
+    MffPs_EnableAutoDrive:
+      description: '进自动'
+      type: boolean
+      value: false
+    MffPs_EnablePS:
+      description: '进直入直出功能'
+      type: boolean
+      value: false
+    MffPs_PsCommand:
+      description: '下发前进/后退/暂停指令'
+      type: uint16
+      value: 0
+
+  TPIM:
+    TPIM_ActAccrPon:
+      description: '动力-传动系统的加速踏板位置信号'
+      type: float64
+    TPIM_Status:
+      description: 'TPIM状态'
+      type: sint16
+
+  VSState:
+    VSState_Gear:
+      description: '挡位'
+      type: uint8
+    VSState_SteeringAngle:
+      description: '方向盘转角'
+      type: float64
+    VSState_EgoGear:
+      description: '自车gear'
+      type: float64
+    VSState_EgoSteeringAngle:
+      description: '自车steering angle'
+      type: float64
+    VSState_EgoSteeringRate:
+      description: '自车steering rate'
+      type: float64
+
+  VscpInfo:
+    VscpInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    VscpInfo_TakeOverStateOverrideBrake:
+      description: '接管信号'
+      type: uint8
+    VscpInfo_TakeOverStateOverrideEps:
+      description: '接管信号'
+      type: uint8
+    VscpInfo_TakeOverStateOverrideThrottle:
+      description: '接管信号'
+      type: uint8
+    VscpInfo_OverrideBrake:
+      description: '刹车Override信号'
+      type: uint8
+    VscpInfo_OverrideEps:
+      description: '方向盘Override信号'
+      type: uint8
+    VscpInfo_OverrideThrottle:
+      description: '油门信号'
+      type: uint8
+    VscpInfo_MrmFlag:
+      description: 'MCU MRM flag'
+      type: uint8
+    VscpInfo_CtrlCmdSourcs:
+      description: '上一帧controlcommand来源'
+      type: uint8
+
+  VscpFunctionModeInfo:
+    VscpFunctionModeInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    VscpFunctionModeInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    VscpFunctionModeInfo_FunctionMode:
+      description: 'function mode'
+      type: uint8
+
+  VscpAebInfo:
+    VscpAebInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    VscpAebInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    VscpAebInfo_AebState:
+      description: 'aeb state'
+      type: uint8
+
+  VscpAdasInfo:
+    VscpAdasInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    VscpAdasInfo_MetaHeader:
+      description: 'meta头'
+      ref: MetaHeader
+    VscpAdasInfo_ElkState:
+      description: 'elk state'
+      type: boolean
+    VscpAdasInfo_LdwpState:
+      description: 'ldwp state'
+      type: boolean
+
+  Can_2F:
+    AATP_ActAxlTrqAuth:
+      description: ''
+      type: uint16
+    AATP_ActAxlTrqAuth_Inv:
+      description: ''
+      type: boolean
+    AEPP_AccEffcPosAuth:
+      description: ''
+      type: uint8
+    AEPP_AccEffcPosAuth_Inv:
+      description: ''
+      type: boolean
+    PABRP_PTAutoBrkgAccelReqAuth:
+      description: ''
+      type: float32
+    PABRP_PTAutoBrkgReqActvAuth:
+      description: ''
+      type: boolean
+    PBP_PTSndBrkPdlPsAuth:
+      description: ''
+      type: uint8
+    PBP_PTSndBrkPdlPsAuth_Inv:
+      description: ''
+      type: boolean
+    PSATIP_PriATActlAuth:
+      description: ''
+      type: float32
+    PSATIP_PriATActlAuth_Inv:
+      description: ''
+      type: boolean
+    SD19P_ARC:
+      description: ''
+      type: uint8
+    SD19P_FCnt:
+      description: ''
+      type: uint8
+    SD19P_MAC:
+      description: ''
+      type: uint32
+  Can_32:
+    TEGP_ARC:
+      description: ''
+      type: uint8
+    TEGP_FCnt:
+      description: ''
+      type: uint8
+    TEGP_MAC:
+      description: ''
+      type: uint32
+    TEGP_TrnsEngdStAuth:
+      description: ''
+      type: uint8
+    TEGP_TrnsEngdStAuth_Inv:
+      description: ''
+      type: boolean
+    TEGP_TrnsEstGrAuth:
+      description: ''
+      type: uint8
+    TEGP_TrnsEstGrAuth_Inv:
+      description: ''
+      type: boolean
+    TEGP_TrnsShftLvrPstnAuth:
+      description: ''
+      type: uint8
+    TEGP_TrnsShftLvrPstnAuth_Inv:
+      description: ''
+      type: boolean
+  Can_3A:
+    DASTP_StrTrqAuth:
+      description: ''
+      type: float32
+    DASTP_StrTrqAuth_Inv:
+      description: ''
+      type: boolean
+    DSIDP_DrvrStrgIntfrDtdAuth:
+      description: ''
+      type: boolean
+    DSIDP_DrvrStrgIntfrDtdAuth_Inv:
+      description: ''
+      type: boolean
+    EPSOP_EPSOvrlyTrqDlvdAuth:
+      description: ''
+      type: float32
+    EPSOP_EPSOvrlyTrqDlvdAuth_Inv:
+      description: ''
+      type: boolean
+    EPSOP_ElecPwStrgTqOvlyStsAuth:
+      description: ''
+      type: uint8
+    EPSTTDP_TotTorqDlvdAuth:
+      description: ''
+      type: float32
+    EPSTTDP_TotTorqDlvdAuth_Inv:
+      description: ''
+      type: boolean
+    SD36P_ARC:
+      description: ''
+      type: uint8
+    SD36P_FCnt:
+      description: ''
+      type: uint8
+    SD36P_MAC:
+      description: ''
+      type: uint32
+    SSASI2P_APAStrgRqCommStsAuth:
+      description: ''
+      type: uint8
+    SSASI2P_ArbdASStrgRqCommStsAuth:
+      description: ''
+      type: uint8
+    SSASI2P_LKAStrgRqCommStsAuth:
+      description: ''
+      type: uint8
+    SSASIP_StrgAsstStsAuth:
+      description: ''
+      type: uint8
+    SSASIP_StrgAsstThrmlInhbdAuth:
+      description: ''
+      type: boolean
+    SSASIP_StrgPerfActlModeAuth:
+      description: ''
+      type: uint8
+    SSASIP_StrgTrqReqOvlyAvalLtAuth:
+      description: ''
+      type: float32
+    SSASIP_StrgTrqReqOvlyAvalRtAuth:
+      description: ''
+      type: float32
+    SSASIP_StrgWhlAngIntegStsAuth:
+      description: ''
+      type: uint8
+    SSASIP_StrgWhlTrqIntegStsAuth:
+      description: ''
+      type: uint8
+    SWHOP_ArbdStrgFtrReqActvAuth:
+      description: ''
+      type: uint8
+    SWHOP_StrgWhlHndsOffDtnCnfdLvlAuth:
+      description: ''
+      type: uint8
+    SWHOP_StrgWhlHndsOffDtnModeAuth:
+      description: ''
+      type: uint8
+    SWHOP_StrgWhlHndsOffDtnStatAuth:
+      description: ''
+      type: uint8
+    StrgAngReqAthrty_Inv:
+      description: ''
+      type: boolean
+  Can_3B:
+    BSIRP_ClsnPrepSysInhbAuth:
+      description: ''
+      type: uint8
+    BSIRP_HillDscntCtlStsAuth:
+      description: ''
+      type: uint8
+    CBIP_ACCBrkgActvAuth:
+      description: ''
+      type: boolean
+    CBIP_ACCBrkgStsAuth:
+      description: ''
+      type: uint8
+    CBIP_BrkPedPstnEmsRltdAuth:
+      description: ''
+      type: uint8
+    CBIP_BrkPedPstnEmsRltdAuth_Inv:
+      description: ''
+      type: boolean
+    CBIP_ClsnImntBrkgStsAuth:
+      description: ''
+      type: uint8
+    CBIP_ClsnImntDrvrBrkPedOvrdAuth:
+      description: ''
+      type: boolean
+    CBIP_DrvrIndpntBrkAppActvAuth:
+      description: ''
+      type: boolean
+    CBIP_EPBCruzCtlCnclReqAuth:
+      description: ''
+      type: boolean
+    CSBTP_ChsSysTtBrkAxTqVlAuth:
+      description: ''
+      type: uint16
+    CSBTP_ChsSysTtBrkAxTqVlAuth_Inv:
+      description: ''
+      type: boolean
+    CSBTP_DrvrIntndTtBrkTqAuth:
+      description: ''
+      type: uint16
+    FWDECP_LFAuth:
+      description: ''
+      type: uint16
+    FWDECP_LFAuth_Inv:
+      description: ''
+      type: boolean
+    FWDECP_RFAuth:
+      description: ''
+      type: uint16
+    FWDECP_RFAuth_Inv:
+      description: ''
+      type: boolean
+    FWDECP_RstOccAuth:
+      description: ''
+      type: boolean
+    RWDECP_LRAuth:
+      description: ''
+      type: uint16
+    RWDECP_LRAuth_Inv:
+      description: ''
+      type: boolean
+    RWDECP_RRAuth:
+      description: ''
+      type: uint16
+    RWDECP_RRAuth_Inv:
+      description: ''
+      type: boolean
+    RWDECP_RstOccAuth:
+      description: ''
+      type: boolean
+    SD16P_ARC:
+      description: ''
+      type: uint8
+    SD16P_FCnt:
+      description: ''
+      type: uint8
+    SD16P_MAC:
+      description: ''
+      type: uint32
+    WhlAngVelLFrtAuth:
+      description: ''
+      type: uint16
+    WhlAngVelLFrtAuth_Inv:
+      description: ''
+      type: boolean
+    WhlAngVelLRrAuth:
+      description: ''
+      type: uint16
+    WhlAngVelLRrAuth_Inv:
+      description: ''
+      type: boolean
+    WhlAngVelRFrtAuth:
+      description: ''
+      type: uint16
+    WhlAngVelRFrtAuth_Inv:
+      description: ''
+      type: boolean
+    WhlAngVelRRrAuth:
+      description: ''
+      type: uint16
+    WhlAngVelRRrAuth_Inv:
+      description: ''
+      type: boolean
+    WhlBrkPresAuth_Inv:
+      description: ''
+      type: boolean
+    WhlBrkPresLFAuth:
+      description: ''
+      type: uint8
+    WhlBrkPresLRAuth:
+      description: ''
+      type: uint8
+    WhlBrkPresRFAuth:
+      description: ''
+      type: uint8
+    WhlBrkPresRRAuth:
+      description: ''
+      type: uint8
+  Can_48:
+    SD30P_ARC:
+      description: ''
+      type: uint8
+    SD30P_FCnt:
+      description: ''
+      type: uint8
+    SD30P_MAC:
+      description: ''
+      type: uint32
+    TARSP_TransActlRngAuth:
+      description: ''
+      type: boolean
+    TARSP_TransActlRngAuth_DuD:
+      description: ''
+      type: boolean
+    TARSP_TransActlRngAuth_Inv:
+      description: ''
+      type: uint8
+    TRDP_TrnsPkRgDgCtFltAuth:
+      description: ''
+      type: boolean
+    TRDP_TrnsPkRgDgLtFltAuth:
+      description: ''
+      type: boolean
+  Can_54:
+    SWIP_ARC:
+      description: ''
+      type: uint8
+    SWIP_FCnt:
+      description: ''
+      type: uint8
+    SWIP_MAC:
+      description: ''
+      type: uint32
+    SWIP_StrgWhlAngAuth:
+      description: ''
+      type: float32
+    SWIP_StrgWhlAngAuth_DuD:
+      description: ''
+      type: boolean
+    SWIP_StrgWhlAngAuth_Inv:
+      description: ''
+      type: boolean
+    SWIP_StrgWhlAngCalStsAuth:
+      description: ''
+      type: uint8
+    SWIP_StrgWhlAngGradAuth:
+      description: ''
+      type: float32
+  Can_58E:
+    AutoBmSlctAllwd:
+      description: ''
+      type: boolean
+    AutoBmSlctAllwd_Inv:
+      description: ''
+      type: boolean
+    FgLmpFrtLftCmd:
+      description: ''
+      type: boolean
+    FgLmpFrtRtCmd:
+      description: ''
+      type: boolean
+
+  Can_262:
+    VSANDP_MAC:
+      description: ''
+      type: uint32
+    VSANDP_Fcnt:
+      description: ''
+      type: uint8
+    VSANDP_VehSpdAvgNDrvnAuth:
+      description: ''
+      type: float32
+    VSANDP_VehSpdAvgNDrvnAuth_Inv:
+      description: ''
+      type: boolean
+    VSANDP_ARC:
+      description: ''
+      type: uint8
+
+  Can_267:
+    SD21P_MAC:
+      description: ''
+      type: uint32
+    SD21P_FCnt:
+      description: ''
+      type: uint8
+    BVSCRP_ACCAxlTrqCmdLimStsAuth:
+      description: ''
+      type: uint8
+    BVSCRP_ACCAxlTrqCmdReqStsAuth:
+      description: ''
+      type: uint8
+    BVSCRP_CPSAxlTrqCmdLimStsAuth:
+      description: ''
+      type: uint8
+    BVSCRP_CPSAxlTrqCmdReqStsAuth:
+      description: ''
+      type: uint8
+    BVSCRP_CruzCtlEnbldAuth:
+      description: ''
+      type: boolean
+    CnvntlCruzCtlIndReqAuth:
+      description: ''
+      type: uint8
+    CruzCtlActvAuth:
+      description: ''
+      type: boolean
+    CruzSpdLmtrDrvrSeltdSpdAuth:
+      description: ''
+      type: float32
+    EGI2P_DrvrReqdAxlTrqIncrAuth:
+      description: ''
+      type: boolean
+    EGI2P_DrvrReqdAxlTrqValAuth:
+      description: ''
+      type: float32
+    EGI2P_DrvrReqdAxlTrqValAuth_Inv:
+      description: ''
+      type: boolean
+    SD21P_ARC:
+      description: ''
+      type: uint8
+    SuprRmtPrkPrplSysResp:
+      description: ''
+      type: uint8
+
+  Can_270:
+    WRDSP_MAC:
+      description: ''
+      type: uint32
+    WRDSP_FCnt:
+      description: ''
+      type: uint8
+    BSAPABP_APABrkgStsAuth:
+      description: ''
+      type: uint8
+    VAP_ActlVehAccelAuth:
+      description: ''
+      type: float32
+    VAP_ActlVehAccelAuth_Inv:
+      description: ''
+      type: boolean
+    WRDSP_LFAuth:
+      description: ''
+      type: uint8
+    WRDSP_LRAuth:
+      description: ''
+      type: uint8
+    WRDSP_RFAuth:
+      description: ''
+      type: uint8
+    WRDSP_RRAuth:
+      description: ''
+      type: uint8
+    WRDSP_ARC:
+      description: ''
+      type: uint8
+    SuprRmtPrkBrkResp:
+      description: ''
+      type: uint8
+
+  Can_27B:
+    SD15P_MAC:
+      description: ''
+      type: uint32
+    SD15P_FCnt:
+      description: ''
+      type: uint8
+    EPBSP_BrkSysBrkLgtsReqdAuth:
+      description: ''
+      type: boolean
+    EPBSP_EPBSysBrkLgtsReqdAuth:
+      description: ''
+      type: boolean
+    EPBSP_ElecPrkBrkApplStsAuth:
+      description: ''
+      type: uint8
+    EPBSP_ElecPrkBrkAvlStsAuth:
+      description: ''
+      type: uint8
+    SD15P_ARC:
+      description: ''
+      type: uint8
+    ElecPrkBrkMnPriPerfRdcd:
+      description: ''
+      type: boolean
+
+  Receive_Reserve:
+    Receive_Reserve_1:
+      description: ''
+      type: float32
+    Receive_Reserve_2:
+      description: ''
+      type: float32
+    Receive_Reserve_3:
+      description: ''
+      type: float32
+    Receive_Reserve_4:
+      description: ''
+      type: float32
+    Receive_Reserve_5:
+      description: ''
+      type: float32
+    Receive_Reserve_6:
+      description: ''
+      type: float32
+    Receive_Reserve_7:
+      description: ''
+      type: float32
+    Receive_Reserve_8:
+      description: ''
+      type: float32
+    Receive_Reserve_9:
+      description: ''
+      type: float32
+    Receive_Reserve_10:
+      description: ''
+      type: float32
+
+  FuncModeStateA:
+    FuncModeStateA_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    FuncModeStateA_State:
+      description: '"Soc A 状态 manual: 0 unp: 1 hnp: 2 cp: 3 acc: 4 mrm: 255"'
+      type: uint8
+    FuncModeStateA_ReqState:
+      description: 'Soc A 行车功能request manual: 0 unp: 1 hnp: 2 cp: 3 acc: 4 mrm: 255'
+      type: uint8
+
+  FuncModeStateB:
+    FuncModeStateB_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    FuncModeStateB_State:
+      description: '"Soc B 状态 manual: 0 unp: 1 hnp: 2 cp: 3 acc: 4 mrm: 255"'
+      type: uint8
+
+  HmiKey:
+    HmiKey_AEBSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_FCWSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_FcwSensitiveLevelIn:
+      description: 'AEB相关开关阈值'
+      type: boolean
+      value: false
+    HmiKey_ABASwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_AWBSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_CDWSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_RCTBSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_RPCMSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_RVBSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_MEBSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_ESSSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_AMAPSwitch:
+      description: 'AEB相关开关'
+      type: boolean
+      value: false
+    HmiKey_PaSwitch:
+      description: '相关开关'
+      type: boolean
+      value: false
+
+  MLAGnss:
+    MLAGnss_Header:
+      description: ''
+      ref: SafeHeader
+    MLAGnss_Meta:
+      description: ''
+      ref: MetaHeader
+    MLAGnss_Available:
+      description: '可用标志'
+      type: uint8
+    MLAGnss_Alt:
+      description: '高度 (m) (altitude椭球高度、Height above ellipsoid)'
+      type: float64
+    MLAGnss_AziTrack:
+      description: 'GNSS航迹航向'
+      type: float64
+    MLAGnss_Hdop:
+      description: '水平DOP'
+      type: float64
+    MLAGnss_Lat:
+      description: '纬度 (deg) 弧度(latitude)'
+      type: float64
+    MLAGnss_Lon:
+      description: '经度 (deg) 弧度(longitude)'
+      type: float64
+    MLAGnss_MsgType:
+      description: '消息类型'
+      type: uint8
+    MLAGnss_RtkAge:
+      description: '差分年龄'
+      type: float64
+    MLAGnss_SatNum:
+      description: '卫星数'
+      type: uint16
+    MLAGnss_Speed:
+      description: 'GNSS地速'
+      type: float64
+    MLAGnss_Status:
+      description: '解状态'
+      type: float64
+    MLAGnss_UtcTime:
+      description: 'utc时间'
+      type: float64
+    MLAGnss_VelE:
+      description: '东向速度'
+      type: float64
+    MLAGnss_VelN:
+      description: '北向速度'
+      type: float64
+    MLAGnss_VelU:
+      description: '天向速度'
+      type: float64
+    MLAGnss_AltMsl:
+      description: '海拔高度'
+      type: float64
+    MLAGnss_DualAntennaAzimuth:
+      description: '双天线方位角'
+      type: float64
+    MLAGnss_FixType:
+      description: '定位方式'
+      type: uint8
+    MLAGnss_Pdop:
+      description: '位置精度因子'
+      type: float64
+    MLAGnss_StdPe:
+      description: '东向位置预估的偏差标准差'
+      type: float64
+    MLAGnss_StdPn:
+      description: '北向位置预估的偏差标准差'
+      type: float64
+    MLAGnss_StdPu:
+      description: '天向位置预估的偏差标准差'
+      type: float64
+    MLAGnss_StdVe:
+      description: '东向速度预估的偏差标准差'
+      type: float64
+    MLAGnss_StdVn:
+      description: '北向速度预估的偏差标准差'
+      type: float64
+    MLAGnss_StdVu:
+      description: '天向速度预估的偏差标准差'
+      type: float64
+    MLAGnss_SvNum:
+      description: '当前定位使用的卫星数'
+      type: uint16
+    MLAGnss_Vdop:
+      description: '垂直精度因子'
+      type: float64
+
+  MffOddInfo:
+    MffOddInfo_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MffOddInfo_LaneWidth:
+      description: '车道宽 2.5m-5.5m odd结果值'
+      type: boolean
+    MffOddInfo_UnpOddReginValue:
+      description: 'UNP ODD区域内结果值'
+      type: boolean
+    MffOddInfo_VehicleAndLaneAngle:
+      description: '车头和车道中心线夹角 >±5°时 odd结果值'
+      type: boolean
+
+  MrmCtrlCmd:
+    MrmCtrlCmd_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    MrmCtrlCmd_Acc:
+      description: 'MRM指令制动减速度'
+      type: float64
+    MrmCtrlCmd_AccValid:
+      description: 'MRM指令制动减速度有效'
+      type: uint8
+    MrmCtrlCmd_Available:
+      description: 'MRM指令可用性'
+      type: uint8
+    MrmCtrlCmd_Gear:
+      description: 'MRM指令挡位'
+      type: float64
+    MrmCtrlCmd_GearValid:
+      description: 'MRM指令挡位有效'
+      type: uint8
+    MrmCtrlCmd_Steeringangle:
+      description: 'MRM指令方向盘转角'
+      type: float64
+    MrmCtrlCmd_SteeringangleValid:
+      description: 'MRM指令方向盘转角有效'
+      type: uint8
+    MrmCtrlCmd_Torque:
+      description: 'MRM指令驱动扭矩'
+      type: float64
+    MrmCtrlCmd_TorqueValid:
+      description: 'MRM指令驱动扭矩有效'
+      type: uint8
+
+  Wheel:
+    Wheel_SafeHeader:
+      description: '安全头'
+      ref: SafeHeader
+    Wheel_HeaderFrameId:
+      description: ''
+      type: uint64
+    Wheel_MetaSeq:
+      description: ''
+      type: uint64
+    Wheel_MetaTimestampUs:
+      description: ''
+      type: uint64
+    Wheel_AngleReportAvailable:
+      description: ''
+      type: uint8
+    Wheel_AngleReportFrontLeft:
+      description: ''
+      type: float64
+    Wheel_AngleReportFrontRight:
+      description: ''
+      type: float64
+    Wheel_AngleReportRearLeft:
+      description: ''
+      type: float64
+    Wheel_AngleReportRearRight:
+      description: ''
+      type: float64
+    Wheel_AngleReportTimestampUs:
+      description: ''
+      type: uint64
+    Wheel_PositionReportAvailable:
+      description: ''
+      type: uint8
+    Wheel_PositionReportFrontLeft:
+      description: ''
+      type: uint16
+    Wheel_PositionReportFrontRight:
+      description: ''
+      type: uint16
+    Wheel_PositionReportRearLeft:
+      description: ''
+      type: uint16
+    Wheel_PositionReportRearRight:
+      description: ''
+      type: uint16
+    Wheel_PositionReportTimestampUs:
+      description: ''
+      type: uint16
+    Wheel_SpeedReportAvailable:
+      description: ''
+      type: uint8
+    Wheel_SpeedReportFrontLeft:
+      description: ''
+      type: float64
+    Wheel_SpeedReportFrontRight:
+      description: ''
+      type: float64
+    Wheel_SpeedReportRearLeft:
+      description: ''
+      type: float64
+    Wheel_SpeedReportRearRight:
+      description: ''
+      type: float64
+    Wheel_SpeedReportTimestampUs:
+      description: ''
+      type: uint64
+    Wheel_LinearAccelerationLon:
+      description: '纵向加速度 vehicle_imu_report.vehicle_imu_report_data.linear_acceleration_lon'
+      type: boolean
+    Wheel_SpeedMpsFrontLeft:
+      description: '左前轮轮速 单位m/s 前进为正 后退为负 wheel_speed_report.wheel_speed_report_data.front_left_mps'
+      type: boolean
+    Wheel_SpeedMpsFrontRight:
+      description: '右前轮轮速 单位m/s 前进为正 后退为负 wheel_speed_report.wheel_speed_report_data.front_right_mps'
+      type: boolean
+    Wheel_SpeedMpsRearLeft:
+      description: '左后轮轮速 单位m/s 前进为正 后退为负 wheel_speed_report.wheel_speed_report_data.rear_left_mps'
+      type: boolean
+    Wheel_SpeedMpsRearRight:
+      description: '右后轮轮速 单位m/s 前进为正 后退为负 wheel_speed_report.wheel_speed_report_data.rear_right_mps'
+      type: boolean
+    Wheel_E2eFlag:
+      description: 'e2e'
+      type: uint8
+    Wheel_HeaderFrameID:
+      description: ''
+      type: uint64
+    Wheel_HeaderSeq:
+      description: ''
+      type: uint32
+    Wheel_HeaderStamp:
+      description: ''
+      type: uint64
+
+  CommonUssEhcoData:
+    CommonUssEhcoData_Available:
+      description: 'echo是否有效'
+      type: uint8
+    CommonUssEhcoData_TimestampUs:
+      description: '接收时间戳'
+      type: uint64
+    CommonUssEhcoData_Seq:
+      description: '计数'
+      type: uint64
+    CommonUssEhcoData_UssEchoDistance:
+      description: 'echo 飞行距离(m)'
+      type: float32
+    CommonUssEhcoData_UssEchoProb:
+      description: 'echo 概率'
+      type: float32
+    CommonUssEhcoData_UssEchoWidth:
+      description: 'echo 宽度(us)'
+      type: uint64
+    CommonUssEhcoData_UssEchoAmplitude:
+      description: 'echo 振幅(LSB)'
+      type: uint16
+    CommonUssEhcoData_UssRtWidth:
+      description: 'echo ringtime 宽度(us)'
+      type: uint16
+    CommonUssEhcoData_UssEchoQuality:
+      description: 'echo 质量(0~100)'
+      type: uint16
+    CommonUssEhcoData_EchoSendId:
+      description: 'echo 发送id'
+      type: uint16
+    CommonUssEhcoData_EchoReceiveId:
+      description: 'echo 接收id'
+      type: uint16
+    CommonUssEhcoData_Reserved:
+      description: 'reserve字段'
+      type: uint64
+
+
+  UltrasonicEchoStatus:
+    UltrasonicEchoStatus_UssStatus:
+      description: 'USS 探头状态(0:正常 1:failed 2:blind)'
+      type: uint8
+    UltrasonicEchoStatus_UssTemperature:
+      description: 'USS 温度(摄氏度)'
+      type: uint16
+    UltrasonicEchoStatus_Reserved:
+      description: 'reserve字段'
+      type: uint64
+
+  UltrasonicCommonEchoInfo:
+    UltrasonicCommonEchoInfo_UssEchoData:
+      description: ''
+      ref: Uss_echo_data
+    UltrasonicCommonEchoInfo_UssEchoStatus:
+      description: ''
+      ref: UltrasonicEchoStatus
+
+  UltrasonicPackageInput:
+    UltrasonicPackageInput_Header:
+      description: ''
+      ref: SafeHeader
+    UltrasonicPackageInput_Meta:
+      description: ''
+      ref: MetaHeader
+    UltrasonicPackageInput_UssEchoInfo:
+      description: ''
+      ref: Uss_echo_info
+
+  RadarPerceptionObjects:
+    RadarPerceptionObjects_ObjectId:
+      description: '障碍物id'
+      type: uint16
+    RadarPerceptionObjects_TypeInfo:
+      description: '障碍物类型'
+      type: uint8
+    RadarPerceptionObjects_RelativePositionX:
+      description: '自车坐标系下障碍物x坐标(m)'
+      type: float32
+    RadarPerceptionObjects_RelativePositionY:
+      description: '自车坐标系下障碍物y坐标(m)'
+      type: float32
+    RadarPerceptionObjects_RelativePositionZ:
+      description: '自车坐标系下障碍物z坐标(m)'
+      type: float32
+    RadarPerceptionObjects_RelativeVelocityX:
+      description: '障碍物x方向速度(m/s)'
+      type: float32
+    RadarPerceptionObjects_RelativeVelocityY:
+      description: '障碍物y方向速度(m/s)'
+      type: float32
+    RadarPerceptionObjects_RelativeVelocityZ:
+      description: '障碍物z方向速度(m/s)'
+      type: float32
+    RadarPerceptionObjects_ObstacleProb:
+      description: '障碍物动态/静态概率(0~1)'
+      type: float32
+    RadarPerceptionObjects_ExistProb:
+      description: '障碍物存在置信度(0~1)'
+      type: float32
+    RadarPerceptionObjects_Status:
+      description: '状态'
+      type: uint8
+
+  RadarPerceptionResult:
+    RadarPerceptionResult_Header:
+      description: ''
+      ref: SafeHeader
+    RadarPerceptionResult_SensorTimestampUs: # 和下面的RadarPerceptionResult_SensorTimestampUs有重复
+      description: '传感器数据产生时刻时间戳(us)'
+      type: uint64
+    RadarPerceptionResult_ObjectNum:
+      description: '障碍物的数量'
+      type: uint16
+    RadarPerceptionResult_Available:
+      description: '可用标志'
+      type: uint8
+    RadarPerceptionResult_SensorTimestampUs_: # 暂时在最后加一个下划线以区分
+      description: 'sensor时间戳(us)'
+      type: uint64
+    RadarPerceptionResult_SensorTag:
+      description: '标志，区分探头位置'
+      type: uint8
+    RadarPerceptionResult_RadarPerceptionObjects:
+      description: ''
+      ref: RadarPerceptionObjectsArray
+
+  RadarPerceptionResultFront:
+    RadarPerceptionResultFront_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultRr:
+    RadarPerceptionResultRr_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultRc:
+    RadarPerceptionResultRc_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultLr:
+    RadarPerceptionResultLr_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultLc:
+    RadarPerceptionResultLc_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultLeftTail:
+    RadarPerceptionResultLeftTail_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
+
+  RadarPerceptionResultRightTail:
+    RadarPerceptionResultRightTail_RadarPerceptionResult:
+      description: ''
+      ref: RadarPerceptionResult
