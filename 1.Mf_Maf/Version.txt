@@ -1,4 +1,8 @@
-
+1.4:
+	添加了ChassisReport/WheelReport/BodyReport
+1.3：
+	添加了VSS_CP
+	处理了结构体字段顺序随机的问题
 1.2：
 	更改DGW\VSCP的接口
 1.1：

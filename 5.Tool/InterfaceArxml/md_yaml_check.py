@@ -635,15 +635,14 @@ def summary(markdown_checker, yaml_checker, yaml_markdown_checker) -> None:
         print(
             "**************************************** SUMMARY ****************************************"
         )
-        sys.exit(1) # 用于在CI中判断是否通过 FIX: 2023-12-18 11:24:55
-        
+        sys.exit(1)  # 用于在CI中判断是否通过 FIX: 2023-12-18 11:24:55
+
     else:
         print("[SUCCESS] all checks passed")
         print(
             "**************************************** SUMMARY ****************************************"
         )
-        sys.exit(0) # 用于在CI中判断是否通过 FIX: 2023-12-18 11:24:55
-    
+        sys.exit(0)  # 用于在CI中判断是否通过 FIX: 2023-12-18 11:24:55
 
     # 输出总共有多少个接口和多少个数据类型, 便于之后检查是否对应
     # print(f"Total Interfaces in Markdown File: {markdown_checker.count_table_rows()}")

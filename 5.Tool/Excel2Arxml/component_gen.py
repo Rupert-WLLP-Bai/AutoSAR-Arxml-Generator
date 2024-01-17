@@ -2,23 +2,25 @@
 #  * @Author: junhao.bai
 #  * @Date: 2023-11-27
 #  * @Last Modified by:   junhao.bai
-#  * @Last Modified time: 2023-12-21 20:46:55
+#  * @Last Modified time: 2024-1-15 16:17:50
 #  */
 
+from enum import Enum
 import os
 import uuid
 from lxml import etree
 import pandas as pd
 from typing import List, Dict, Optional, Set, Tuple
 
-from component_types.componentTypes import ComponentType
-from component_types.prPorts import (
+from component_types.component_types import ComponentType
+from component_types.pr_ports import (
     ArrayValueSpecification,
     Elements,
     Fields,
     Filter,
     InitValue,
     NumericalValueSpecification,
+    OperationRef,
     RecordValueSpecification,
     Ports,
     RPortPrototype,
@@ -29,12 +31,14 @@ from component_types.prPorts import (
     ProvidedComSpecs,
     NonQueuedReceiverComSpec,
     NonQueuedSenderComSpec,
+    ServerComSpec,
 )
 from component_types.ports_creator import create_ports_xml
 from component_types.internal_behaviors_creator import create_internal_behaviors_xml
-from component_types.internalBehaviors import (
+from component_types.internal_behaviors import (
     AccessedVariable,
     AutosarVariableIref,
+    ContextRPortRef,
     DataIref,
     DataReceivePointByArguments,
     DataReceivedEvent,
@@ -42,19 +46,22 @@ from component_types.internalBehaviors import (
     Events,
     InitEvent,
     InternalBehaviors,
+    OperationIrefPPort,
+    OpreationInvokedEvent,
     PortPrototypeRef,
     RunnableEntity,
     Runnables,
     SwcInternalBehavior,
+    SynchronousServerCallPoint,
     TargetDataPrototypeRef,
     TimingEvent,
     VariableAccess,
+    ServerCallPoints,
+    OperationIref,
+    TargetRequiredOperationRef,
 )
 
-import logging
-
-logging.basicConfig(level=logging.WARNING)  # 设置日志级别 开发时为DEBUG, 运行时为WARNING
-logger = logging.getLogger(__name__)
+from logger_config import logger
 
 
 class CtApManager:
@@ -208,12 +215,17 @@ class CtApManager:
 
     def _get_port_and_data_prototype_refs(
         self, trigger_interval: str, ctap_name: str
-    ) -> Tuple[Optional[DataReceivePointByArguments], Optional[DataSendPoints]]:
+    ) -> Tuple[
+        Optional[DataReceivePointByArguments],
+        Optional[DataSendPoints],
+        Optional[ServerCallPoints],
+    ]:
         # TODO: 这里假设所有的Sender都是DataSendPoints, 所有的Receiver都是DataReceivePointByArguments
         # TODO: 还需要处理S_Trigger和R_Trigger的值为R_EVENT的情况, 所以这里暂时把trigger_interval的类型设置为str
 
         data_receive_points = None
         data_send_points = None
+        server_call_points = None
 
         # 筛选当前组件和触发器间隔的 dataframe 行
         sender_rows = self.df[
@@ -228,58 +240,90 @@ class CtApManager:
         # 处理发送者的 DataSendPoints
         if not sender_rows.empty:
             variable_access_list = []
-            added_elements = set()  # 检查是否有重复的元素
+            added_elements_for_sr = set()  # 检查是否有重复的元素 S/R Port
+            added_elements_for_cs = set()  # 检查是否有重复的元素 C/S Port
             for _, row_data in sender_rows.iterrows():
-                element_name = f'{row_data["Element(Structure/Array/Value)"]}'
-                if element_name not in added_elements:
-                    variable_access = VariableAccess(
-                        short_name=f'DSP_M_{row_data["Element name"]}_0',  # DSP表示DataSendPoints FIX: 加上一个_M_用于区分 2023-12-15 15:30:51
-                        accessed_variable=AccessedVariable(
-                            autosar_variable_iref=AutosarVariableIref(
-                                port_prototype_ref=PortPrototypeRef(
-                                    dest="P-PORT-PROTOTYPE",
-                                    value=f"/ComponentTypes/{ctap_name}/{row_data['Properties name']}",
-                                ),
-                                target_data_prototype_ref=TargetDataPrototypeRef(
-                                    dest="VARIABLE-DATA-PROTOTYPE",
-                                    value=f"/PortInterfaces/{row_data['Interface name']}/{row_data['Element name']}",
-                                ),
-                            )
-                        ),
-                    )
-                    variable_access_list.append(variable_access)
-                    added_elements.add(element_name)
+                if row_data["Port type"] == "SR":
+                    element_name = f'{row_data["Element(Structure/Array/Value)"]}'
+                    if element_name not in added_elements_for_sr:
+                        variable_access = VariableAccess(
+                            short_name=f'DSP_M_{row_data["Element name"]}_0',  # DSP表示DataSendPoints FIX: 加上一个_M_用于区分 2023-12-15 15:30:51
+                            accessed_variable=AccessedVariable(
+                                autosar_variable_iref=AutosarVariableIref(
+                                    port_prototype_ref=PortPrototypeRef(
+                                        dest="P-PORT-PROTOTYPE",
+                                        value=f"/ComponentTypes/{ctap_name}/{row_data['Properties name']}",
+                                    ),
+                                    target_data_prototype_ref=TargetDataPrototypeRef(
+                                        dest="VARIABLE-DATA-PROTOTYPE",
+                                        value=f"/PortInterfaces/{row_data['Interface name']}/{row_data['Element name']}",
+                                    ),
+                                )
+                            ),
+                        )
+                        variable_access_list.append(variable_access)
+                        added_elements_for_sr.add(element_name)
+                elif row_data["Port type"] == "CS":
+                    # TODO: 补上这里的处理逻辑，这里是创建SynchronousServerCallPoint
+                    pass
             data_send_points = DataSendPoints(variable_access=variable_access_list)
 
         # 处理接收者的 DataReceivePointByArguments
         if not receiver_rows.empty:
             variable_access_list = []
-            added_elements = set()  # 检查是否有重复的元素
+            synchronous_server_call_point_list = []
+            added_elements_for_sr = set()  # 检查是否有重复的元素 S/R Port
+            added_elements_for_cs = set()  # 检查是否有重复的元素 C/S Port
             for _, row_data in receiver_rows.iterrows():
-                element_name = f'{row_data["Element(Structure/Array/Value)"]}'
-                if element_name not in added_elements:
-                    variable_access = VariableAccess(
-                        short_name=f'DRPA_M_{row_data["Element name"]}_0',  # DRPA表示DataReceivePointByArguments FIX: 加上一个_M_用于区分 2023-12-15 15:30:47
-                        accessed_variable=AccessedVariable(
-                            autosar_variable_iref=AutosarVariableIref(
-                                port_prototype_ref=PortPrototypeRef(
+                if row_data["Port type"] == "SR":
+                    element_name = f'{row_data["Element(Structure/Array/Value)"]}'
+                    if element_name not in added_elements_for_sr:
+                        variable_access = VariableAccess(
+                            short_name=f'DRPA_M_{row_data["Element name"]}_0',  # DRPA表示DataReceivePointByArguments FIX: 加上一个_M_用于区分 2023-12-15 15:30:47
+                            accessed_variable=AccessedVariable(
+                                autosar_variable_iref=AutosarVariableIref(
+                                    port_prototype_ref=PortPrototypeRef(
+                                        dest="R-PORT-PROTOTYPE",
+                                        value=f"/ComponentTypes/{ctap_name}/{row_data['Properties name']}",
+                                    ),
+                                    target_data_prototype_ref=TargetDataPrototypeRef(
+                                        dest="VARIABLE-DATA-PROTOTYPE",
+                                        value=f"/PortInterfaces/{row_data['Interface name']}/{row_data['Element name']}",
+                                    ),
+                                )
+                            ),
+                        )
+                        variable_access_list.append(variable_access)
+                        added_elements_for_sr.add(element_name)
+                elif row_data["Port type"] == "CS":
+                    # TODO: 补上这里的处理逻辑
+                    element_name = f'{row_data["Element(Structure/Array/Value)"]}'
+                    if element_name not in added_elements_for_cs:
+                        synchronous_server_call_point = SynchronousServerCallPoint(
+                            UUID=uuid.uuid4().hex.upper(),
+                            short_name=f'SSCP_M_{row_data["Element name"]}_0',
+                            operation_iref=OperationIref(
+                                context_r_port_ref=ContextRPortRef(
                                     dest="R-PORT-PROTOTYPE",
                                     value=f"/ComponentTypes/{ctap_name}/{row_data['Properties name']}",
                                 ),
-                                target_data_prototype_ref=TargetDataPrototypeRef(
-                                    dest="VARIABLE-DATA-PROTOTYPE",
+                                target_required_operation_ref=TargetRequiredOperationRef(
+                                    dest="CLIENT-SERVER-OPERATION",
                                     value=f"/PortInterfaces/{row_data['Interface name']}/{row_data['Element name']}",
                                 ),
-                            )
-                        ),
-                    )
-                    variable_access_list.append(variable_access)
-                    added_elements.add(element_name)
+                            ),
+                        )
+                        synchronous_server_call_point_list.append(
+                            synchronous_server_call_point
+                        )
+                        added_elements_for_cs.add(element_name)
             data_receive_points = DataReceivePointByArguments(
                 variable_access=variable_access_list
             )
-
-        return data_receive_points, data_send_points
+            server_call_points = ServerCallPoints(
+                synchronous_server_call_point=synchronous_server_call_point_list
+            )
+        return data_receive_points, data_send_points, server_call_points
 
     def create_ctap_m_dict(self) -> Dict[str, Dict]:
         """创建所有唯一CtAp_M_XXXX命名的字典集合，包括pports和rports"""
@@ -292,15 +336,26 @@ class CtApManager:
 
             # Ensure that the sender and receiver components are present in the dictionary
             if sender_key not in ctap_m_dict:
-                ctap_m_dict[sender_key] = {"pports": {}, "rports": {}}
+                ctap_m_dict[sender_key] = {
+                    "pports": {},
+                    "rports": {},
+                    "cports": {},
+                    "sport": {},
+                }
             if receiver_key not in ctap_m_dict:
-                ctap_m_dict[receiver_key] = {"pports": {}, "rports": {}}
+                ctap_m_dict[receiver_key] = {
+                    "pports": {},
+                    "rports": {},
+                    "cports": {},
+                    "sport": {},
+                }
 
             # Define a common structure to hold port data
             port_data = {
                 "Sender /Server": row["Sender /Server"],
                 "Receiver /Client": row["Receiver /Client"],
-                "port_type": row["Port type"],  # "SR
+                "port_type": row["Port type"],  # SR or CS
+                "queued": row["Queued"],  # 0 or other number
                 "interface_name": row["Interface name"],
                 "element_name": row["Element name"],
                 "properties_name": row["Properties name"],
@@ -323,6 +378,11 @@ class CtApManager:
                 ctap_m_dict[sender_key]["pports"][row["Properties name"]] = port_data
                 ctap_m_dict[receiver_key]["rports"][row["Properties name"]] = port_data
 
+            # TODO: 这里需要添加CS类型的端口
+            if row["Port type"] == "CS":
+                ctap_m_dict[sender_key]["cports"][row["Properties name"]] = port_data
+                ctap_m_dict[receiver_key]["sport"][row["Properties name"]] = port_data
+
         return ctap_m_dict
 
     def create_numerical_value_specification(
@@ -336,10 +396,10 @@ class CtApManager:
     def create_array_value_specification(self, element_def) -> ArrayValueSpecification:
         if element_def["base_type"] in self.basic_types:
             # Create an array of numerical values if the base type is basic.
-            logger.info(
+            logger.debug(
                 f"[BASIC-TYPE-IN-ARRAY] {element_def['base_type']} is a basic type in an array."
             )
-            logger.info(
+            logger.debug(
                 f"[BASIC-TYPE-IN-ARRAY] Creating {element_def['dlc']} numerical values."
             )
             return ArrayValueSpecification(
@@ -355,10 +415,10 @@ class CtApManager:
             full_def = self.get_definition(element_def["base_type"])
             if full_def["is_array"]:
                 # Recursively create array specifications for nested arrays.
-                logger.info(
+                logger.debug(
                     f"[ARRAY-IN-ARRAY] {element_def['base_type']} is an array in an array."
                 )
-                logger.info(f"[ARRAY-IN-ARRAY] Creating {element_def['dlc']} arrays.")
+                logger.debug(f"[ARRAY-IN-ARRAY] Creating {element_def['dlc']} arrays.")
                 # logger.info(f"[ARRAY-IN-ARRAY] Full definition: {full_def}")
                 return ArrayValueSpecification(
                     elements=Elements(
@@ -370,10 +430,10 @@ class CtApManager:
                 )
             elif full_def["is_structure"]:
                 # Recursively create record specifications for nested structures.
-                logger.info(
+                logger.debug(
                     f"[STRUCTURE-IN-ARRAY] {element_def['base_type']} is a structure in an array."
                 )
-                logger.info(
+                logger.debug(
                     f"[STRUCTURE-IN-ARRAY] Creating {element_def['dlc']} records."
                 )
                 # logger.info(f"[STRUCTURE-IN-ARRAY] Full definition: {full_def}")
@@ -421,10 +481,10 @@ class CtApManager:
             full_member_def = self.get_definition(member_info["base_type"])
 
             if full_member_def["is_array"]:
-                logger.info(
+                logger.debug(
                     f"[ARRAY-IN-STRUCTURE] {member_info['base_type']} is an array in a structure."
                 )
-                logger.info(
+                logger.debug(
                     f"[ARRAY-IN-STRUCTURE] Creating {full_member_def['dlc']} arrays."
                 )
                 # logger.info(f"[ARRAY-IN-STRUCTURE] Full definition: {full_member_def}")
@@ -432,10 +492,10 @@ class CtApManager:
                     self.create_array_value_specification(full_member_def)
                 )
             elif full_member_def["is_structure"]:
-                logger.info(
+                logger.debug(
                     f"[STRUCTURE-IN-STRUCTURE] {member_info['base_type']} is a structure in a structure."
                 )
-                logger.info(
+                logger.debug(
                     f"[STRUCTURE-IN-STRUCTURE] Creating a nested record: {member_name}."
                 )
                 # logger.info(f"[STRUCTURE-IN-STRUCTURE] Full definition: {full_member_def}")
@@ -529,12 +589,46 @@ class CtApManager:
                 for pport, port_info in ports_data.get("pports", []).items()
             ]
 
+            # 向p_port_prototype_list和r_port_prototype_list中添加C/S Port
+            for cport, port_info in ports_data.get("cports", []).items():
+                p_port_prototype_list.append(
+                    PPortPrototype(
+                        UUID=uuid.uuid4().hex.upper(),
+                        short_name=str(cport),
+                        provided_interface_tref=ProvidedInterfaceTref(
+                            dest="CLIENT-SERVER-INTERFACE",
+                            value=f"/PortInterfaces/{port_info['interface_name']}",
+                        ),
+                        provided_com_specs=ProvidedComSpecs(
+                            server_com_spec=ServerComSpec(
+                                operation_ref=OperationRef(
+                                    dest="CLIENT-SERVER-OPERATION",
+                                    value=f"/PortInterfaces/{port_info['interface_name']}",
+                                ),
+                                queue_length=port_info["queued"],
+                            )
+                        ),
+                    )
+                )
+
+            for sport, port_info in ports_data.get("sport", []).items():
+                r_port_prototype_list.append(
+                    RPortPrototype(
+                        UUID=uuid.uuid4().hex.upper(),
+                        short_name=str(sport),
+                        required_interface_tref=RequiredInterfaceTref(
+                            dest="CLIENT-SERVER-INTERFACE",
+                            value=f"/PortInterfaces/{port_info['interface_name']}",
+                        ),
+                    )
+                )
+
             ports_object = Ports(
                 r_port_prototype=r_port_prototype_list,
                 p_port_prototype=p_port_prototype_list,
             )
 
-            # TODO 添加InternalBehaviors, 从Excel中读取并且生成, 还需要分析对应的Events和Runnables的内容
+            # 添加InternalBehaviors, 从Excel中读取并且生成, 还需要分析对应的Events和Runnables的内容
             triggers = self._extract_triggers()
             runnables_list: List[RunnableEntity] = []
             timing_events = []
@@ -543,6 +637,12 @@ class CtApManager:
             # FIX: 2023-12-21 17:39:18 处理R_EVENT的情况
             dataReceivedEvents = []
 
+            # TODO: 2024-1-15 16:43:20 处理OperationInvokedEvent的情况
+            operationInvokedEvents = []
+
+            # TODO: 获取ServerCallPoints 2024-1-12 15:54:24
+            server_call_points = ServerCallPoints()
+
             # FIX: 在遍历开始之前先添加一个InitEvent, 再添加一个R_M_XX_Init的Runnable 2023-12-15 15:33:07
             initEvent = InitEvent(
                 UUID=uuid.uuid4().hex.upper(),
@@ -550,7 +650,7 @@ class CtApManager:
                 start_on_event_ref=f"/ComponentTypes/{short_name}/{short_name}_InternalBehavior/R_M_{short_name[7:]}_Init",
                 dest="RUNNABLE-ENTITY",
             )
-            
+
             runnables_list.append(
                 RunnableEntity(
                     UUID=uuid.uuid4().hex.upper(),
@@ -560,67 +660,51 @@ class CtApManager:
                     symbol=f"R_M_{short_name[7:]}_Init",
                 )
             )
-            
+
             runnables = Runnables(runnable_entity=[])
+
+            # 定义枚举类
+            class StringType(Enum):
+                TIME_STRING = 1
+                R_EVENT = 2
+                OTHER = 3
+
+            # 判断字符串类型的函数
+            def get_string_type(s):
+                if s.endswith("ms") and s[:-2].isdigit():
+                    return StringType.TIME_STRING
+                elif s == "R_Event":
+                    return StringType.R_EVENT
+                else:
+                    return StringType.OTHER
 
             for interval in trigger_intervals:
                 # interval可能不是"xxms"格式, 直接continue (可能是R_EVENT)
-                res = interval.split("ms") # 暂时用于判断是xxms还是其他情况
-                if len(res) == 2:
+                res = get_string_type(interval)
+                if res == StringType.TIME_STRING:
+                    self.process_normal_intervals(
+                        interval,
+                        runnables,
+                        runnables_list,
+                        server_call_points,
+                        short_name,
+                        timing_events,
+                    )
+                elif res == StringType.R_EVENT:
+                    # 在这里处理R_EVENT的情况, 假设除了xxms之外的情况都是R_EVENT
                     sanitized_interval = interval.replace(" ", "")
                     short_name_without_ctap = short_name[7:]  # 去除 CtAp_M_ 前缀
-                    runnable_name = f"R_M_{short_name_without_ctap}_{sanitized_interval}"
-                    timing_event_name = (
-                        f"TMT_R_M_{short_name_without_ctap}_{sanitized_interval}"
+                    runnable_name = (
+                        f"R_M_{short_name_without_ctap}_{sanitized_interval}"
                     )
-                    timing_event_start_on_event_ref = f"/ComponentTypes/{short_name}/{short_name}_InternalBehavior/R_M_{short_name_without_ctap}_{sanitized_interval}"
-
-                    (
-                        data_receive_points,
-                        data_send_points,
-                    ) = self._get_port_and_data_prototype_refs(interval, short_name)
-                    
-
-                    runnables_list.append(
-                        RunnableEntity(
-                            UUID=uuid.uuid4().hex.upper(),
-                            short_name=runnable_name,
-                            minimum_start_interval=0.0,
-                            can_be_invoked_concurrently=False,
-                            # TODO: 重新修改_get_port_and_data_prototype_refs函数, 使其正确的匹配上引用ports的结果
-                            data_receive_point_by_arguments=data_receive_points,
-                            data_send_points=data_send_points,
-                            symbol=runnable_name,
-                        )
-                    )
-                    
-                    for runnable in runnables_list:
-                        runnables.runnable_entity.append(runnable)
-
-                    timing_events.append(
-                        TimingEvent(
-                            UUID=uuid.uuid4().hex.upper(),
-                            short_name=timing_event_name,
-                            period=float(interval.split("ms")[0]) / 1000,
-                            start_on_event_ref=timing_event_start_on_event_ref,
-                            dest="RUNNABLE-ENTITY",
-                        )
-                    )
-                else:
-                    # TODO 在这里处理R_EVENT的情况, 假设除了xxms之外的情况都是R_EVENT
-                    sanitized_interval = interval.replace(" ", "")
-                    short_name_without_ctap = short_name[7:]  # 去除 CtAp_M_ 前缀
-                    runnable_name = f"R_M_{short_name_without_ctap}_{sanitized_interval}"
-                    data_received_event_name = (
-                        f"TMT_R_M_{short_name_without_ctap}_{sanitized_interval}"
-                    ) # 应该是TMT_R_M_XXXX_R_EVENT
+                    data_received_event_name = f"TMT_R_M_{short_name_without_ctap}_{sanitized_interval}"  # 应该是TMT_R_M_XXXX_R_EVENT
                     data_received_event_start_on_event_ref = f"/ComponentTypes/{short_name}/{short_name}_InternalBehavior/R_M_{short_name_without_ctap}_{sanitized_interval}"
-                    
-                    # TODO 获取下面两个变量的值
-                    context_r_port_ref = ''
-                    target_data_element_ref = ''
 
-                    # TODO 从df中检索
+                    # 获取下面两个变量的值
+                    context_p_port_ref = ""
+                    target_data_element_ref = ""
+
+                    # 从df中检索
                     # 1. 获取context_r_port_ref
                     # 2. 获取target_data_element_ref
                     row = self.df[
@@ -628,36 +712,40 @@ class CtApManager:
                         & (self.df["R_Trigger"] == interval)
                     ]
                     # 对row进行去重, 对于row(Element(Structure/Array/Value))相同的行, 只保留第一行
-                    row = row.drop_duplicates(subset=["Element(Structure/Array/Value)"], keep='first')
+                    row = row.drop_duplicates(
+                        subset=["Element(Structure/Array/Value)"], keep="first"
+                    )
 
                     # 计数, 创建的Event名称不能相同
                     count = 0
                     if not row.empty:
                         for _, row_data in row.iterrows():
                             count += 1
-                            context_r_port_ref = row_data["Properties name"]
-                            target_data_element_ref = row_data["Element name"]
+                            context_p_port_ref = row_data["Properties name"]
+                            target_data_element_ref = f'PortInterfaces/{row_data["Interface name"]}/{row_data["Element name"]}'  # FIX: 2024-1-10 16:53:40 解决R_Event情况下找不到target_data_element_ref的问题
                             # 添加DataReceivedEvent
                             dataReceivedEvents.append(
                                 DataReceivedEvent(
                                     UUID=uuid.uuid4().hex.upper(),
-                                    short_name=f'{data_received_event_name}_{count}',
+                                    short_name=f"{data_received_event_name}_{count}",
                                     start_on_event_ref=data_received_event_start_on_event_ref,
                                     data_iref=DataIref(
-                                        context_r_port_ref=context_r_port_ref,
+                                        context_r_port_ref=context_p_port_ref,
                                         target_data_element_ref=target_data_element_ref,
-                                    )
+                                    ),
                                 )
                             )
                     else:
-                        logger.error(f"R_EVENT: {short_name_without_ctap} {interval} not found in df")
+                        logger.error(
+                            f"R_EVENT: {short_name_without_ctap} {interval} not found in df"
+                        )
                         continue
-
 
                     # 获取DataReceivePointByArguments和DataSendPoints
                     (
                         data_receive_points,
                         data_send_points,
+                        server_call_points,
                     ) = self._get_port_and_data_prototype_refs(interval, short_name)
 
                     # 创建RunnableEntity
@@ -670,15 +758,78 @@ class CtApManager:
                             symbol=runnable_name,
                             data_receive_point_by_arguments=data_receive_points,
                             data_send_points=data_send_points,
+                            server_call_points=server_call_points,
                         )
                     )
-                    
+                # 处理OpreationInvokedEvent的情况
+                elif res == StringType.OTHER:
+                    # TODO 在这里处理OperationInvokedEvent的情况
+                    sanitized_interval = interval.replace(" ", "")
+                    short_name_without_ctap = short_name[7:]
+                    runnable_name = f"OperationInvokedEvent_M_{short_name_without_ctap}_{sanitized_interval}"
+                    operation_invoked_event_name = f"OpreationInvokedEvent_M_{short_name_without_ctap}_{sanitized_interval}"
+                    operation_invoked_event_start_on_event_ref = f"/ComponentTypes/{short_name}/{short_name}_InternalBehavior/R_M_{short_name_without_ctap}_{sanitized_interval}"
+
+                    logger.debug(
+                        f"OperationInvokedEvent: {short_name_without_ctap} {interval}"
+                    )
+                    # 从df中检索
+                    row = self.df[
+                        (self.df["Sender /Server"] == short_name_without_ctap)
+                        & (self.df["S_Trigger"] == interval)
+                    ]
+                    logger.debug(f"length of row: {len(row)}")
+                    # 对row进行去重, 对于row(Element(Structure/Array/Value))相同的行, 只保留第一行
+                    row = row.drop_duplicates(
+                        subset=["Element(Structure/Array/Value)"], keep="first"
+                    )
+
+                    logger.debug(f"length of row after drop_duplicates: {len(row)}")
+                    logger.debug(f"row: {row}")
+                    if not row.empty:
+                        for _, row_data in row.iterrows():
+                            context_p_port_ref = f"/ComponentTypes/{short_name}/{row_data['Properties name']}"
+
+                            # 添加OperationInvokedEvent
+                            operationInvokedEvents.append(
+                                OpreationInvokedEvent(
+                                    UUID=uuid.uuid4().hex.upper(),
+                                    short_name=f"{operation_invoked_event_name}",
+                                    start_on_event_ref=operation_invoked_event_start_on_event_ref,
+                                    operation_iref=OperationIrefPPort(
+                                        context_p_port_ref=context_p_port_ref,
+                                        target_provided_operation_ref=f"/PortInterfaces/{row_data['Interface name']}/{row_data['Element name']}",
+                                    ),
+                                )
+                            )
+                        # TODO 获取ServerCallPoints
+
+                        # 创建RunnableEntity
+                        runnable_name = (
+                            f"R_M_{short_name_without_ctap}_{sanitized_interval}"
+                        )
+                        runnables.runnable_entity.append(
+                            RunnableEntity(
+                                UUID=uuid.uuid4().hex.upper(),
+                                short_name=runnable_name,
+                                minimum_start_interval=0.0,
+                                can_be_invoked_concurrently=False,
+                                symbol=runnable_name,
+                                server_call_points=server_call_points,
+                            )
+                        )
+                    else:
+                        logger.error(
+                            f"OperationInvokedEvent: {short_name_without_ctap} {interval} not found in df"
+                        )
+                        continue
 
             # 创建一个Events对象, 包含timing_events和initEvent FIX: 2023-12-15 15:25:44
             timing_events_with_init = Events(
                 timing_event=timing_events,
                 init_event=initEvent,
                 data_received_event=dataReceivedEvents,
+                opreation_invoked_event=operationInvokedEvents,
             )
 
             internal_behaviors = InternalBehaviors(
@@ -701,6 +852,54 @@ class CtApManager:
             )
 
         return component_type_list
+
+    def process_normal_intervals(
+        self,
+        interval,
+        runnables,
+        runnables_list,
+        server_call_points,
+        short_name,
+        timing_events,
+    ):
+        """
+        处理正常的interval, 例如: 10ms, 20ms
+        """
+        sanitized_interval = interval.replace(" ", "")
+        short_name_without_ctap = short_name[7:]  # 去除 CtAp_M_ 前缀
+        runnable_name = f"R_M_{short_name_without_ctap}_{sanitized_interval}"
+        timing_event_name = f"TMT_R_M_{short_name_without_ctap}_{sanitized_interval}"
+        timing_event_start_on_event_ref = f"/ComponentTypes/{short_name}/{short_name}_InternalBehavior/R_M_{short_name_without_ctap}_{sanitized_interval}"
+        (
+            data_receive_points,
+            data_send_points,
+            server_call_points,
+        ) = self._get_port_and_data_prototype_refs(interval, short_name)
+        runnables_list.append(
+            RunnableEntity(
+                UUID=uuid.uuid4().hex.upper(),
+                short_name=runnable_name,
+                minimum_start_interval=0.0,
+                can_be_invoked_concurrently=False,
+                data_receive_point_by_arguments=data_receive_points,
+                data_send_points=data_send_points,
+                server_call_points=server_call_points,
+                symbol=runnable_name,
+            )
+        )
+        for runnable in runnables_list:
+            # 判断runnable是否已经存在, 如果存在则不添加
+            if runnable not in runnables.runnable_entity:
+                runnables.runnable_entity.append(runnable)
+        timing_events.append(
+            TimingEvent(
+                UUID=uuid.uuid4().hex.upper(),
+                short_name=timing_event_name,
+                period=float(interval.split("ms")[0]) / 1000,
+                start_on_event_ref=timing_event_start_on_event_ref,
+                dest="RUNNABLE-ENTITY",
+            )
+        )
 
     @staticmethod
     def generate_xml(component_type_list: List[ComponentType], output_file: str):
@@ -773,6 +972,7 @@ class CtApManager:
         for file in files:
             if os.path.exists(file):
                 os.remove(file)
+                print(f"Removed {file}")
 
 
 # 使用新的CtApManager类和相关函数

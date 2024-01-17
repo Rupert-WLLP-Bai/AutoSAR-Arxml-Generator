@@ -19,7 +19,7 @@ stages:
         steps:
           - script: |
               echo "Installing dependencies..."
-              pip install -r requirements.txt
+              pip install -r requirements.txt -i https://artifactory.momenta.works/artifactory/api/pypi/pypi-remote/simple
             displayName: 'Install dependencies'
 
           - script: |

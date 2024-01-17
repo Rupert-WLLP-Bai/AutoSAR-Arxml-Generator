@@ -1,12 +1,13 @@
 # file: ports_creator.py
 # author: JunhaoBai
 # date: 2023-11-30 10:34:02
+# last modified: 2024-1-15 16:18:23
 
 from lxml import etree
-from .componentTypes import ComponentType
-from .internalBehaviors import *
-from .adminData import *
-from .prPorts import *
+from .component_types import ComponentType
+from .internal_behaviors import *
+from .admin_data import *
+from .pr_ports import *
 
 
 # TODO: 对于NONQUEUED-RECEIVER-COM-SPEC和NONQUEUED-SENDER-COM-SPEC中的INIT-VALUE
@@ -106,17 +107,6 @@ def create_r_ports_xml(r_port_prototypes: List[RPortPrototype], ports):
         short_name_element = etree.SubElement(r_port_prototype_element, "SHORT-NAME")
         short_name_element.text = r_port_prototype.short_name
 
-        # 添加REQUIRED-INTERFACE-TREF元素
-        required_interface_tref_element = etree.SubElement(
-            r_port_prototype_element, "REQUIRED-INTERFACE-TREF"
-        )
-        required_interface_tref_element.attrib[
-            "DEST"
-        ] = r_port_prototype.required_interface_tref.dest
-        required_interface_tref_element.text = (
-            r_port_prototype.required_interface_tref.value
-        )
-
         # 如果存在REQUIRED-COM-SPECS，添加该元素及其子元素
         if r_port_prototype.required_com_specs:
             required_com_specs_element = etree.SubElement(
@@ -200,6 +190,17 @@ def create_r_ports_xml(r_port_prototypes: List[RPortPrototype], ports):
                         r_port_prototype.required_com_specs.nonqueued_receiver_com_spec.handle_never_received
                     ).lower()
 
+        # 添加REQUIRED-INTERFACE-TREF元素 FIX: 2024-1-15 14:07:37 这个逻辑独立于NONQUEUED-RECEIVER-COM-SPEC
+        required_interface_tref_element = etree.SubElement(
+            r_port_prototype_element, "REQUIRED-INTERFACE-TREF"
+        )
+        required_interface_tref_element.attrib[
+            "DEST"
+        ] = r_port_prototype.required_interface_tref.dest
+        required_interface_tref_element.text = (
+            r_port_prototype.required_interface_tref.value
+        )
+
 
 def create_p_ports_xml(p_port_prototypes: List[PPortPrototype], ports):
     # 处理P-PORT-PROTOTYPEs
@@ -210,17 +211,6 @@ def create_p_ports_xml(p_port_prototypes: List[PPortPrototype], ports):
         # 添加SHORT-NAME元素
         short_name_element = etree.SubElement(p_port_prototype_element, "SHORT-NAME")
         short_name_element.text = p_port_prototype.short_name
-
-        # 添加PROVIDED-INTERFACE-TREF元素
-        provided_interface_tref_element = etree.SubElement(
-            p_port_prototype_element, "PROVIDED-INTERFACE-TREF"
-        )
-        provided_interface_tref_element.attrib[
-            "DEST"
-        ] = p_port_prototype.provided_interface_tref.dest
-        provided_interface_tref_element.text = (
-            p_port_prototype.provided_interface_tref.value
-        )
 
         # 如果存在PROVIDED-COM-SPECS，添加该元素及其子元素
         if p_port_prototype.provided_com_specs:
@@ -265,33 +255,43 @@ def create_p_ports_xml(p_port_prototypes: List[PPortPrototype], ports):
                         p_port_prototype.provided_com_specs.nonqueued_sender_com_spec.init_value,
                         nonqueued_sender_com_spec_element,
                     )
-                # if (
-                #     not p_port_prototypes.provided_com_specs.nonqueued_sender_com_spec.init_value
-                # ):
-                #     continue
 
-                # init_value_element = etree.SubElement(
-                #     nonqueued_sender_com_spec_element, "INIT-VALUE"
-                # )
-                # array_value_specification_element = etree.SubElement(
-                #     init_value_element, "ARRAY-VALUE-SPECIFICATION"
-                # )
-                # elements_element = etree.SubElement(
-                #     array_value_specification_element, "ELEMENTS"
-                # )
+            # 针对SERVER-COM-SPEC
+            if p_port_prototype.provided_com_specs.server_com_spec:
+                server_com_spec_element = etree.SubElement(
+                    provided_com_specs_element, "SERVER-COM-SPEC"
+                )
+                # 添加OPERATION-REF元素
+                operation_ref_element = etree.SubElement(
+                    server_com_spec_element, "OPERATION-REF"
+                )
+                operation_ref_element.attrib[
+                    "DEST"
+                ] = (
+                    p_port_prototype.provided_com_specs.server_com_spec.operation_ref.dest
+                )
+                operation_ref_element.text = (
+                    p_port_prototype.provided_com_specs.server_com_spec.operation_ref.value
+                )
 
-                # for (
-                #     numerical_value_specification
-                # ) in (
-                #     p_port_prototypes.provided_com_specs.nonqueued_sender_com_spec.init_value.array_value_specification.elements.numerical_value_specification
-                # ):
-                #     numerical_value_specification_element = etree.SubElement(
-                #         elements_element, "NUMERICAL-VALUE-SPECIFICATION"
-                #     )
-                #     value_element = etree.SubElement(
-                #         numerical_value_specification_element, "VALUE"
-                #     )
-                #     value_element.text = str(numerical_value_specification.value)
+                # 添加QUEUE-LENGTH元素
+                queue_length_element = etree.SubElement(
+                    server_com_spec_element, "QUEUE-LENGTH"
+                )
+                queue_length_element.text = str(
+                    p_port_prototype.provided_com_specs.server_com_spec.queue_length
+                )
+
+        # 添加PROVIDED-INTERFACE-TREF元素 FIX: 2024-1-15 14:08:37 这个逻辑独立于NONQUEUED-SENDER-COM-SPEC
+        provided_interface_tref_element = etree.SubElement(
+            p_port_prototype_element, "PROVIDED-INTERFACE-TREF"
+        )
+        provided_interface_tref_element.attrib[
+            "DEST"
+        ] = p_port_prototype.provided_interface_tref.dest
+        provided_interface_tref_element.text = (
+            p_port_prototype.provided_interface_tref.value
+        )
 
 
 def create_ports_xml(

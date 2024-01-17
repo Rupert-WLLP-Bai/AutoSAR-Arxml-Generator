@@ -1,6 +1,6 @@
 # author: Junhao Bai
-# date: 2023-12-1 15:21:23
-# version: 1.0.2 - fix
+# date: 2024-1-15 16:18:31
+# version: 1.1
 # description: This script is used to convert markdown and yaml files to excel files.
 # change log:
 # 1.0.1: 2023/11/21 更改了excel中嵌套结构体的表示方式，重构了traverse_array和traverse_value为traverse函数
@@ -8,6 +8,7 @@
 # 1.0.1 - fix2 2023/11/30 修改了global variables中md和yaml文件的路径
 # 1.0.2 2023/12/01 实现了Array引用Structure的功能，优化了递归遍历函数的写法
 # 1.0.2 - fix1 2023/12/01 完全重构了代码, 将不同的功能分别封装成类和函数，使得代码更加清晰易读
+# 1.1 2024/01/15 实现了CS类型Port的Queued列的功能
 
 # install the required packages
 # pip install pandas
@@ -16,6 +17,7 @@
 import pandas as pd
 import yaml
 import re
+import os
 
 
 class MarkdownTableProcessor:
@@ -131,6 +133,12 @@ class ExcelConverter:
                         "DLC": "",
                         "Initial value": str(info.get("value", "")),
                     }
+                    # 如果存在Queued列，则将其加入到new_row中, 不存在则设置为0
+                    if "Queued" in row:
+                        new_row["Queued"] = row["Queued"]
+                    else:
+                        new_row["Queued"] = 0
+
                     all_rows.append(new_row)
         return pd.DataFrame(all_rows)
 
@@ -182,7 +190,7 @@ class ExcelConverter:
             receiver_client = "" if is_referenced else row["Receiver /Client"]
             s_trigger = "" if is_referenced else row["S_Trigger"]
             r_trigger = "" if is_referenced else row["R_Trigger"]
-            port_type = "" if is_referenced else row["Port type"]
+            port_type = row["Port type"]
 
             new_row = {
                 "Sender /Server": sender_server,
@@ -199,6 +207,11 @@ class ExcelConverter:
                 "Initial value": str(info.get("value", "")),
             }
 
+            # 如果存在Queued列，则将其加入到new_row中, 不存在则设置为0
+            if "Queued" in row:
+                new_row["Queued"] = row["Queued"]
+            else:
+                new_row["Queued"] = 0
             if ref:
                 # If there's a reference, expand that element (structure or array)
                 self.expand_element(
@@ -229,7 +242,7 @@ class ExcelConverter:
         receiver_client = "" if is_referenced else row["Receiver /Client"]
         s_trigger = "" if is_referenced else row["S_Trigger"]
         r_trigger = "" if is_referenced else row["R_Trigger"]
-        port_type = "" if is_referenced else row["Port type"]
+        port_type = row["Port type"]
 
         base_type = array_info.get("type", "")  # Default base type from array_info
         # 如果Array引用了Struct，则base_type应该是Struct的类型名
@@ -257,6 +270,13 @@ class ExcelConverter:
             "DLC": size,
             "Initial value": str(array_info.get("value", "")),
         }
+
+        # 如果存在Queued列，则将其加入到new_row中, 不存在则设置为0
+        if "Queued" in row:
+            new_row["Queued"] = row["Queued"]
+        else:
+            new_row["Queued"] = 0
+
         all_rows.append(new_row)
 
         if ref:
@@ -369,8 +389,7 @@ class ExcelConverter:
         def generate_interface_name(row):
             if row["Sender /Server"] == "":
                 return ""
-            return "Pi_M_{}".format(row["Element(Structure/Array/Value)"]
-            )
+            return "Pi_M_{}".format(row["Element(Structure/Array/Value)"])
 
         def generate_element_name(row):
             return "{}".format(row["Element(Structure/Array/Value)"])
@@ -405,15 +424,19 @@ class ExcelConverter:
 
         # TODO: 实现以下功能 2023-12-14 14:23:30
         # 实现一个函数, 扫描当前的Properties name列, 如果发送方相同, 接收方不同,
-        # 且发送的Element(Structure/Array/Value)相同, 
+        # 且发送的Element(Structure/Array/Value)相同,
         # 则将名称改为Pp_{Sender /Server}2{GeneralSwC}_{Element(Structure/Array/Value)}
         def update_properties_name(self):
             # Group by 'Sender /Server' and 'Element(Structure/Array/Value)' and filter groups with more than one unique 'Receiver /Client'
-            grouped = self.result.groupby(['Sender /Server', 'Element(Structure/Array/Value)'])
+            grouped = self.result.groupby(
+                ["Sender /Server", "Element(Structure/Array/Value)"]
+            )
             for (sender, element), group in grouped:
-                if len(group['Receiver /Client'].unique()) > 1:
+                if len(group["Receiver /Client"].unique()) > 1:
                     for index in group.index:
-                        self.result.at[index, 'Properties name'] = f"Pp_{sender}2GeneralSwC_{element}"
+                        self.result.at[
+                            index, "Properties name"
+                        ] = f"Pp_{sender}2GeneralSwC_{element}"
 
         update_properties_name(self)
 
@@ -442,6 +465,7 @@ class ExcelConverter:
             "S_Trigger",
             "R_Trigger",
             "Port type",
+            "Queued",  # FIX: 2024-1-15 15:23:43
             "Element(Structure/Array/Value)",
             "Signal description",
             "Data type",
@@ -462,14 +486,32 @@ class ExcelConverter:
         print("The following information has been written to the Excel file:")
         print(f"Number of rows:    {len(self.result)}")
         print(f"Number of columns: {len(self.result.columns)}")
-        print(
-            f"Number of values:  {self.result[self.result['Data type'] == 'Value']['Element(Structure/Array/Value)'].unique().shape[0]}"
+        value_shape = (
+            self.result[self.result["Data type"] == "Value"][
+                "Element(Structure/Array/Value)"
+            ]
+            .unique()
+            .shape[0]
         )
-        print(
-            f"Number of arrays:  {self.result[self.result['Data type'] == 'Array']['Element(Structure/Array/Value)'].unique().shape[0]}"
+        array_shape = (
+            self.result[self.result["Data type"] == "Array"][
+                "Element(Structure/Array/Value)"
+            ]
+            .unique()
+            .shape[0]
         )
+        struct_shape = (
+            self.result[self.result["Data type"] == "Structure"][
+                "Element(Structure/Array/Value)"
+            ]
+            .unique()
+            .shape[0]
+        )
+        print(f"Number of values:  {value_shape}")
+        print(f"Number of arrays:  {array_shape}")
+        print(f"Number of structs: {struct_shape}")
         print(
-            f"Number of structs: {self.result[self.result['Data type'] == 'Structure']['Element(Structure/Array/Value)'].unique().shape[0]}"
+            f"Number of implementation data types: {value_shape + array_shape + struct_shape}"
         )
 
 
@@ -484,6 +526,10 @@ class Application:  #
         markdown_file = "../../1.Mf_Maf/Mf_CP_Graph.md"
         yaml_file = "../../1.Mf_Maf/Maf_CP_interface.yaml"
         output_file = "../../2.Maf_InterfaceExcel/swc.xlsx"
+
+        # check if directory exists, if not, create it
+        if not os.path.exists(os.path.dirname(output_file)):
+            os.makedirs(os.path.dirname(output_file))
 
         excel_converter.generate_excel(
             markdown_processor, yaml_processor, markdown_file, yaml_file, output_file
