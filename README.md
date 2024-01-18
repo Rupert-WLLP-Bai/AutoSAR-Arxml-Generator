@@ -16,11 +16,11 @@ pip install -r requirements.txt
 cd 5.Tool
 python all.py
 ```
-S
+
 # Features
 - Generate ARXML files from yaml and markdown files.
 - Sender/Receiver and Client/Server interfaces are supported.
 - Nested data structures are supported.
   - Array in Struct
   - Struct in Struct
-  - Array in ArrayS
+  - Array in Array
